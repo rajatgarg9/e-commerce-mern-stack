@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./backend
+    ports: 
+      - 3000:3000
+    volumes:
+      - /app/node_modules
+      - ./backend:/app

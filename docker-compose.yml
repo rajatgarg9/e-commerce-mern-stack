@@ -2,9 +2,17 @@ version: "3.8"
 
 services:
   backend:
-    build: ./backend
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
     ports: 
       - 3000:3000
     volumes:
       - /app/node_modules
       - ./backend:/app
+    networks: 
+      - e-commerce-mern-stack
+
+networks:
+  e-commerce-mern-stack:
+    driver: bridge

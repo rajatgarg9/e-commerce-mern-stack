@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { APP_FILTER } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
@@ -7,8 +6,6 @@ import { AuthModule } from '@src/auth/auth.module';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-
-import { HttpExceptionFilter } from '@src/filters/http-exception.filter';
 
 @Module({
   imports: [
@@ -23,12 +20,6 @@ import { HttpExceptionFilter } from '@src/filters/http-exception.filter';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [
-    {
-      provide: APP_FILTER,
-      useClass: HttpExceptionFilter,
-    },
-    AppService,
-  ],
+  providers: [AppService],
 })
 export class AppModule {}

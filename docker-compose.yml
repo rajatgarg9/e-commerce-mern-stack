@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
   backend:
+    container_name: e-commerce-mern-stack_backend
     build:
       context: ./backend
       dockerfile: Dockerfile.local
@@ -12,7 +13,23 @@ services:
       - ./backend:/app
     networks:
       - e-commerce-mern-stack
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data:/data/db
+    restart: always
+    networks:
+      - e-commerce-mern-stack
 
 networks:
   e-commerce-mern-stack:
     driver: bridge
+
+volumes:
+  mongodb_data:

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { RedisCacheModule } from '@src/redis-cache/redis-cache.module';
+import { RedisModule } from '@src/redis/redis.module';
 
 import { AuthModule } from '@src/auth/auth.module';
 
@@ -12,7 +12,7 @@ import { AppService } from './app.service';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    RedisCacheModule,
+    RedisModule,
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({

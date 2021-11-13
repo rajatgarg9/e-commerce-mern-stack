@@ -7,8 +7,9 @@
 ```js
      {
        id:string,
+       sellerId:string,
        name:string,
-       image_url:string,
+       imageUrl:string,
        price:{
            amount:number,
            currency:string
@@ -25,7 +26,7 @@
      {
        id:string,
        name:string,
-       image_url:string,
+       imageUrl:string,
        selectedQuantity:number,
        price:{
            amount:number,
@@ -49,7 +50,7 @@
         }
        products:[{
          name:string,
-         image_url:string,
+         imageUrl:string,
           price:{
            amount:number,
            currency:string
@@ -65,7 +66,7 @@
      {
        id:string,
        name:string,
-       image_url:string,
+       imageUrl:string,
        price:{
            amount:number,
            currency:string

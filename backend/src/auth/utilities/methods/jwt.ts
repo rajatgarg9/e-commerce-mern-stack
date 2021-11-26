@@ -1,4 +1,4 @@
-import { IJwtData, ICreateJwtResponse } from '@src/auth/interfaces';
+import { IJwtDataWithStatus, ICreateJwtResponse } from '@src/auth/interfaces';
 
 import { encryptHmacSHA256, encodeBase64, decodeBase64 } from './crypto';
 
@@ -6,16 +6,19 @@ export function createJwt(
   sub: string,
   exp: number,
   secretKey: string,
+  expiresIn,
+  tokenName: string,
 ): ICreateJwtResponse {
-  const header: IJwtData['header'] = {
+  const header: IJwtDataWithStatus['header'] = {
     alg: 'HS256',
     typ: 'JWT',
   };
-  const payload: IJwtData['payload'] = {
+  const payload: IJwtDataWithStatus['payload'] = {
     sub,
     exp,
     iat: Date.now(),
     iss: 'poc',
+    tokenName,
   };
   const base64Header = encodeBase64(header);
   const base64Payload = encodeBase64(payload);
@@ -26,32 +29,42 @@ export function createJwt(
   );
   const jwtToken = `${base64Header}.${base64Payload}.${signature}`;
 
-  return { jwtToken, expiresIn: this.accessTokenDurationInSeconds };
+  return { jwtToken, expiresIn };
 }
 
-export function decodeJwt(jwt: string, secretKey: string): IJwtData {
-  const [base64Header = '', base64Payload = '', signature] = jwt.split('.');
+export function decodeJwt(jwt: string, secretKey: string): IJwtDataWithStatus {
+  try {
+    const [base64Header = '', base64Payload = '', signature] = jwt.split('.');
 
-  const newSignature = encryptHmacSHA256(
-    `${base64Header}.${base64Payload}`,
-    secretKey,
-  );
+    const newSignature = encryptHmacSHA256(
+      `${base64Header}.${base64Payload}`,
+      secretKey,
+    );
 
-  const header: IJwtData['header'] = JSON.parse(decodeBase64(base64Header));
+    const header: IJwtDataWithStatus['header'] = JSON.parse(
+      decodeBase64(base64Header),
+    );
 
-  const payload: IJwtData['payload'] = JSON.parse(decodeBase64(base64Payload));
+    const payload: IJwtDataWithStatus['payload'] = JSON.parse(
+      decodeBase64(base64Payload),
+    );
 
-  const { exp } = payload || {};
+    const { exp } = payload || {};
 
-  const result = {
-    isValid: false,
-    header,
-    payload,
-  };
+    const result = {
+      isValid: false,
+      header,
+      payload,
+    };
 
-  if (newSignature === signature && exp > Date.now()) {
-    result.isValid = true;
+    if (newSignature === signature && exp > Date.now()) {
+      result.isValid = true;
+    }
+
+    return result;
+  } catch (error) {
+    return {
+      isValid: false,
+    };
   }
-
-  return result;
 }

@@ -11,14 +11,14 @@ export class CacheService {
   }
 
   async set(key: string, value, ttl = 1000) {
-    await this.cache.set(key, value, { ttl });
+    return this.cache.set(key, value, { ttl });
   }
 
   async reset() {
-    await this.cache.reset();
+    return this.cache.reset();
   }
 
   async del(key: string) {
-    await this.cache.del(key);
+    return this.cache.del(key);
   }
 }

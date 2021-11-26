@@ -1,4 +1,4 @@
-import { AuthTokenType } from '../enums/auth-token-type.enum';
+import { AuthTokenType } from '@src/auth/enums';
 
 export interface SignUpResponse {
   accessToken: string;

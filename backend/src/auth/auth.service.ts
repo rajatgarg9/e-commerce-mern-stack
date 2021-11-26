@@ -11,11 +11,11 @@ import { LoginDto, SignUpDto, LogoutDto } from '@src/auth/dto';
 import {
   SignUpResponse,
   LoginResponse,
-  IJwtData,
+  IJwtDataWithStatus,
   ICreateJwtResponse,
 } from './interfaces';
 
-import { AuthTokenType } from '@src/auth/enums/auth-token-type.enum';
+import { AuthTokenType, TokenNames } from '@src/auth/enums';
 
 import {
   DUPLICATE_USER,
@@ -98,7 +98,10 @@ export class AuthService {
   }
 
   async blacklistJwtToken(token: string) {
-    const tokenDecodedData: IJwtData = decodeJwt(token, this.jwtSecretKey);
+    const tokenDecodedData: IJwtDataWithStatus = decodeJwt(
+      token,
+      this.jwtSecretKey,
+    );
 
     if (!(await this.cacheService.get(token)) && tokenDecodedData.isValid) {
       const { exp } = tokenDecodedData.payload;
@@ -114,6 +117,8 @@ export class AuthService {
       sub,
       Date.now() + this.accessTokenDurationInSeconds * 1000,
       this.jwtSecretKey,
+      this.accessTokenDurationInSeconds,
+      TokenNames.ACCESS,
     );
   }
   getRefreshToken(sub: string): ICreateJwtResponse {
@@ -121,6 +126,8 @@ export class AuthService {
       sub,
       Date.now() + this.refreshTokenDurationInSeconds * 1000,
       this.jwtSecretKey,
+      this.refreshTokenDurationInSeconds,
+      TokenNames.REFRESH,
     );
   }
 }

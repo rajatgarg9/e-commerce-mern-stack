@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 
 import { VersioningType, ValidationPipe } from '@nestjs/common';
 
-import { HttpExceptionFilter } from '@src/filters/http-exception.filter';
+import { AllExceptionsFilter } from '@src/filters/all-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,7 +12,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
-  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(new AllExceptionsFilter());
 
   app.enableVersioning({
     type: VersioningType.URI,

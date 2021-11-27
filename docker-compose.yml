@@ -27,6 +27,8 @@ services:
     restart: always
     networks:
       - e-commerce-mern-stack
+    logging:
+      driver: none
 
   redis:
     image: redis:alpine

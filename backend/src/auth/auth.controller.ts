@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Body, HttpException } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
-import { LoginDto, SignUpDto } from './dto';
+import { SignUpDto, LoginDto, LogoutDto } from '@src/auth/dto';
 
-import { SignUpResponse } from './interfaces';
+import { SignUpResponse, LoginResponse } from '@src/auth/interfaces';
 
 @Controller('auth')
 export class AuthController {
@@ -11,21 +11,16 @@ export class AuthController {
 
   @Post('/sign-up')
   async signUp(@Body() signUpDto: SignUpDto): Promise<SignUpResponse> {
-    return this.authService.signUp();
+    return this.authService.signUp(signUpDto);
   }
 
   @Post('/login')
-  login(): string {
-    return this.authService.signUp();
+  async login(@Body() loginDto: LoginDto): Promise<LoginResponse> {
+    return this.authService.login(loginDto);
   }
 
-  @Post('/token/refresh')
-  refreshToken(): string {
-    return this.authService.signUp();
-  }
-
-  @Get('/token/revoke')
-  tokenRevoke(): string {
-    return this.authService.signUp();
+  @Post('/logout')
+  async logout(@Body() logoutDto: LogoutDto): Promise<void> {
+    return this.authService.logout(logoutDto);
   }
 }

@@ -1,20 +1,126 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { CacheService } from '@src/redis/cache.service';
+import { UsersService } from '@src/users/users.service';
 
-import { LoginDto, SignUpDto } from './dto';
+import { createJwt, decodeJwt } from '@src/auth/utilities/methods';
 
-import { UserDocument, Test } from './schema/user.schema';
+import { LoginDto, SignUpDto, LogoutDto } from '@src/auth/dto';
+
+import {
+  SignUpResponse,
+  LoginResponse,
+  IJwtData,
+  ICreateJwtResponse,
+} from './interfaces';
+
+import { AuthTokenType } from '@src/auth/enums/auth-token-type.enum';
+
+import {
+  DUPLICATE_USER,
+  INVALID_EMAIL,
+  INVALID_PASSWORD,
+} from '@src/auth/utilities/messages';
+
+import {
+  getHashedPassword,
+  comparePassword,
+} from '@src/auth/utilities/methods';
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectModel('users') private userModel: Model<Test>) {}
+  private readonly accessTokenDurationInSeconds = 60 * 10;
+  private readonly refreshTokenDurationInSeconds = 60 * 60 * 24 * 10;
+  private readonly jwtSecretKey =
+    this.configService.get<string>('JWT_SECRET_KEY');
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly configService: ConfigService,
+    private readonly cacheService: CacheService,
+  ) {}
+  async signUp(signUpDto: SignUpDto): Promise<SignUpResponse> {
+    const { email } = signUpDto || {};
+    const currentUsers = await this.usersService.getUserByEmail(email);
 
-  signUp(): any {
-    const createdCat = new this.userModel();
-    return createdCat.save();
-    // this.userModel.
-    return 'Hello World1!';
+    if (currentUsers?.length > 0) {
+      throw new BadRequestException(DUPLICATE_USER);
+    }
+
+    const hashedPassord = await getHashedPassword(signUpDto.password);
+    const newUser = await this.usersService.createUser({
+      ...signUpDto,
+      password: hashedPassord,
+    });
+    const { jwtToken: accessToken, expiresIn } = this.getAccessToken(
+      newUser.id,
+    );
+    const { jwtToken: refreshToken } = this.getRefreshToken(newUser.id);
+
+    return {
+      accessToken,
+      refreshToken,
+      expiresIn,
+      tokenType: AuthTokenType.Bearer,
+    };
+  }
+
+  async login(loginDto: LoginDto): Promise<LoginResponse> {
+    const { email, password } = loginDto || {};
+
+    const currentUser = await this.usersService.getUserByEmail(email);
+
+    if (currentUser.length === 0) {
+      throw new BadRequestException(INVALID_EMAIL);
+    }
+
+    if (!(await comparePassword(password, currentUser[0].password))) {
+      throw new BadRequestException(INVALID_PASSWORD);
+    }
+
+    const { jwtToken: accessToken, expiresIn } = this.getAccessToken(
+      currentUser[0].id,
+    );
+    const { jwtToken: refreshToken } = this.getRefreshToken(currentUser[0].id);
+
+    return {
+      accessToken,
+      refreshToken,
+      expiresIn,
+      tokenType: AuthTokenType.Bearer,
+    };
+  }
+
+  async logout(logoutDto: LogoutDto): Promise<void> {
+    const { accessToken, refreshToken } = logoutDto || {};
+    this.blacklistJwtToken(accessToken);
+    this.blacklistJwtToken(refreshToken);
+  }
+
+  async blacklistJwtToken(token: string) {
+    const tokenDecodedData: IJwtData = decodeJwt(token, this.jwtSecretKey);
+
+    if (!(await this.cacheService.get(token)) && tokenDecodedData.isValid) {
+      const { exp } = tokenDecodedData.payload;
+
+      const ttl = Math.round((exp - Date.now()) / 1000);
+
+      this.cacheService.set(token, true, ttl);
+    }
+  }
+
+  getAccessToken(sub: string): ICreateJwtResponse {
+    return createJwt(
+      sub,
+      Date.now() + this.accessTokenDurationInSeconds * 1000,
+      this.jwtSecretKey,
+    );
+  }
+  getRefreshToken(sub: string): ICreateJwtResponse {
+    return createJwt(
+      sub,
+      Date.now() + this.refreshTokenDurationInSeconds * 1000,
+      this.jwtSecretKey,
+    );
   }
 }

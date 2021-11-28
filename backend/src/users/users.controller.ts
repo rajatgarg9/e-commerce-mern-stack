@@ -1,19 +1,17 @@
-import { Controller, Get, Body, Post } from '@nestjs/common';
+import { Controller, Get, Req } from '@nestjs/common';
 
 import { UsersService } from './users.service';
+
+import { IGetUserResponse } from '@src/users/interfaces';
 
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Get('/@me')
-  async getUser(@Body() data: any): Promise<any> {
-    return 'Hello World';
-    return this.usersService.getUser(data.userId);
-  }
+  async getUser(@Req() req: any): Promise<IGetUserResponse> {
+    const { user }: { user: IGetUserResponse } = req;
 
-  @Post('/@me')
-  async createUser(@Body() data: any): Promise<any> {
-    return this.usersService.createUser(data);
+    return user;
   }
 }

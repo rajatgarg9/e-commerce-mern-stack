@@ -35,6 +35,8 @@ import {
   getSplitedAuthorizationHeader,
 } from '@src/auth/utilities/methods';
 
+import { IGetUserResponse } from '@src/users/interfaces';
+
 @Injectable()
 export class AuthService {
   private readonly accessTokenDurationInSeconds = 60 * 10;
@@ -48,9 +50,9 @@ export class AuthService {
   ) {}
   async signUp(signUpDto: SignUpDto): Promise<ISignUpResponse> {
     const { email } = signUpDto || {};
-    const currentUsers = await this.usersService.getUserByEmail(email);
+    const currentUsers = await this.usersService.findUserByEmail(email);
 
-    if (currentUsers?.length > 0) {
+    if (currentUsers?.id) {
       throw new BadRequestException(DUPLICATE_USER);
     }
 
@@ -75,9 +77,9 @@ export class AuthService {
   async login(loginDto: LoginDto): Promise<ILoginResponse> {
     const { email, password } = loginDto || {};
 
-    const currentUser = await this.usersService.getUserByEmail(email);
+    const currentUser = await this.usersService.findUserByEmail(email);
 
-    if (currentUser.length === 0) {
+    if (!currentUser?.id) {
       throw new BadRequestException(INVALID_EMAIL);
     }
 
@@ -86,7 +88,7 @@ export class AuthService {
     }
 
     const { jwtToken: accessToken, expiresIn } = this.getAccessToken(
-      currentUser[0].id,
+      currentUser.id,
     );
     const { jwtToken: refreshToken } = this.getRefreshToken(currentUser[0].id);
 
@@ -126,7 +128,9 @@ export class AuthService {
     }
   }
 
-  async validateAutorization(authorization: string) {
+  async validateAutorization(
+    authorization: string,
+  ): Promise<IGetUserResponse | false> {
     if (!authorization) {
       return false;
     }
@@ -150,12 +154,12 @@ export class AuthService {
     }
 
     const { payload: { sub = '' } = {} } = jwtObject;
-    const currentUsers = await this.usersService.getUser(sub);
-    if (!currentUsers) {
+    const currentUser = await this.usersService.getUser(sub);
+    if (!currentUser) {
       return false;
     }
 
-    return currentUsers;
+    return currentUser;
   }
 
   async blacklistJwtToken(token: string) {

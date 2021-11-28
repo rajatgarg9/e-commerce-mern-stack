@@ -4,7 +4,10 @@ import { Model } from 'mongoose';
 import { Logger } from '@nestjs/common';
 
 import { USERS_COLLECTION } from '@src/mongo/users/users.collection';
+
 import { IUserDao } from '@src/mongo/users/users.dao';
+
+import { IGetUserResponse, CreateUser } from '@src/users/interfaces';
 
 @Injectable()
 export class UsersService {
@@ -14,15 +17,29 @@ export class UsersService {
     @InjectModel(USERS_COLLECTION.name) private userModel: Model<IUserDao>,
   ) {}
 
-  async getUser(id: string): Promise<any> {
+  async getUser(id: string): Promise<IGetUserResponse> {
+    const user = await this.findUserById(id);
+
+    if (!user) {
+      return <IGetUserResponse>{};
+    }
+
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    };
+  }
+
+  async findUserById(id: string): Promise<IUserDao> {
     return this.userModel.findById(id);
   }
 
-  async getUserByEmail(email: string): Promise<any> {
-    return this.userModel.find({ email });
+  async findUserByEmail(email: string): Promise<IUserDao> {
+    return this.userModel.findOne({ email });
   }
-  async createUser(data: any): Promise<any> {
-    // this.logger.log(data);
+  async createUser(data: CreateUser): Promise<IGetUserResponse> {
+    this.logger.verbose(`${data.email} user is successfully created`);
     return this.userModel.create(data);
   }
 }

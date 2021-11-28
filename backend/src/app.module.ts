@@ -13,6 +13,7 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 
 import { AuthGuard } from '@src/auth/guards/auth.guard';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { AuthGuard } from '@src/auth/guards/auth.guard';
     }),
     AuthModule,
     UsersModule,
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [

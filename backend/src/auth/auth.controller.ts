@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Headers } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
-import { DisableAuthDecorator } from '@src/auth/decorators/disable-auth.decorators';
+import { DisableAuthDecorator } from '@src/auth/decorators/disable-auth.decorator';
 
 import { SignUpDto, LoginDto } from '@src/auth/dto';
 

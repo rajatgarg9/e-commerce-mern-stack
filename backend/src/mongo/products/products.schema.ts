@@ -13,11 +13,8 @@ export const ProuctSchema = new Schema<IProductDao>({
   imageUrl: { type: String, required: true },
   availableQuantity: { type: Number, required: true },
   price: {
-    type: new Schema<IProductDao['price']>({
-      amount: { type: Number, required: true },
-      currency: { type: String, required: true },
-    }),
-    required: true,
+    amount: { type: Number, required: true },
+    currency: { type: String, required: true },
   },
   lateUpdatedAt: {
     type: Date,
@@ -28,5 +25,13 @@ export const ProuctSchema = new Schema<IProductDao>({
     type: Date,
     required: true,
     default: new Date(),
+  },
+});
+
+ProuctSchema.set('toJSON', {
+  transform: function (doc, ret) {
+    ret.id = ret._id;
+    delete ret._id;
+    delete ret.__v;
   },
 });

@@ -83,14 +83,14 @@ export class AuthService {
       throw new BadRequestException(INVALID_EMAIL);
     }
 
-    if (!(await comparePassword(password, currentUser[0].password))) {
+    if (!(await comparePassword(password, currentUser.password))) {
       throw new BadRequestException(INVALID_PASSWORD);
     }
 
     const { jwtToken: accessToken, expiresIn } = this.getAccessToken(
       currentUser.id,
     );
-    const { jwtToken: refreshToken } = this.getRefreshToken(currentUser[0].id);
+    const { jwtToken: refreshToken } = this.getRefreshToken(currentUser.id);
 
     return {
       accessToken,

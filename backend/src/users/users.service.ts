@@ -18,17 +18,7 @@ export class UsersService {
   ) {}
 
   async getUser(id: string): Promise<IGetUserResponse> {
-    const user = await this.findUserById(id);
-
-    if (!user) {
-      return <IGetUserResponse>{};
-    }
-
-    return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-    };
+    return this.findUserById(id);
   }
 
   async findUserById(id: string): Promise<IUserDao> {

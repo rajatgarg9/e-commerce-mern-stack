@@ -28,3 +28,11 @@ export const OrderSchema = new Schema<IOrderDao>({
     },
   ],
 });
+
+OrderSchema.set('toJSON', {
+  transform: function (doc, ret) {
+    ret.id = ret._id;
+    delete ret._id;
+    delete ret.__v;
+  },
+});

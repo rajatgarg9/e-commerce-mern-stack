@@ -1,7 +1,7 @@
+import { VersioningType, ValidationPipe } from '@nestjs/common';
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-
-import { VersioningType, ValidationPipe } from '@nestjs/common';
 
 import { AllExceptionsFilter } from '@src/filters/all-exception.filter';
 

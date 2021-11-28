@@ -1,16 +1,8 @@
 import { Document } from 'mongoose';
 import { ObjectID } from 'mongodb';
 
-export interface IProductDao extends Document {
+import { IBaseProduct } from '@src/products/interfaces';
+export interface IProductDao extends Document, IBaseProduct {
   readonly id: string;
-  readonly sellerId: typeof ObjectID;
-  readonly name: string;
-  readonly imageUrl: string;
-  readonly price: {
-    amount: number;
-    currency: string;
-  };
-  readonly availableQuantity: number;
-  readonly lateUpdatedAt: Date;
-  readonly createdAt: Date;
+  sellerId: typeof ObjectID;
 }

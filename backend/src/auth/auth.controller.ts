@@ -1,6 +1,8 @@
 import { Controller, Post, Body, Headers } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
+import { DisableAuthDecorator } from '@src/auth/decorators/disable-auth.decorators';
+
 import { SignUpDto, LoginDto } from '@src/auth/dto';
 
 import {
@@ -11,6 +13,7 @@ import {
 } from '@src/auth/interfaces';
 
 @Controller('auth')
+@DisableAuthDecorator()
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

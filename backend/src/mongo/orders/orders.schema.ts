@@ -1,8 +1,8 @@
 import { Schema } from 'mongoose';
 
-import { IOrderDoa } from './orders.doa';
+import { IOrderDao } from './orders.dao';
 
-export const OrderSchema = new Schema<IOrderDoa>({
+export const OrderSchema = new Schema<IOrderDao>({
   userId: { type: String, required: true },
   createdAt: {
     type: Date,

@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
 
-export interface IUserDoa extends Document {
+export interface IUserDao extends Document {
   readonly id: string;
   readonly name: string;
   readonly email: string;

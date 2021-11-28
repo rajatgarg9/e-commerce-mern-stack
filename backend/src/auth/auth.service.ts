@@ -126,6 +126,38 @@ export class AuthService {
     }
   }
 
+  async validateAutorization(authorization: string) {
+    if (!authorization) {
+      return false;
+    }
+    const { type, token } = getSplitedAuthorizationHeader(authorization);
+
+    if (type !== AuthTokenType.Bearer) {
+      return false;
+    }
+
+    const jwtObject = decodeJwt(token, this.jwtSecretKey);
+
+    if (
+      !jwtObject.isValid ||
+      (jwtObject.payload && jwtObject.payload.tokenName !== TokenNames.ACCESS)
+    ) {
+      return false;
+    }
+
+    if (await this.cacheService.get(token)) {
+      return false;
+    }
+
+    const { payload: { sub = '' } = {} } = jwtObject;
+    const currentUsers = await this.usersService.getUser(sub);
+    if (!currentUsers) {
+      return false;
+    }
+
+    return currentUsers;
+  }
+
   async blacklistJwtToken(token: string) {
     const tokenDecodedData: IJwtDataWithStatus = decodeJwt(
       token,

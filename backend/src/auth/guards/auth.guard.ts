@@ -1,56 +1,35 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Reflector } from '@nestjs/core';
 
-import { CacheService } from '@src/redis/cache.service';
-import { UsersService } from '@src/users/users.service';
+import { AuthService } from '@src/auth/auth.service';
 
-import { AuthTokenType, TokenNames } from '@src/auth/enums';
-
-import { decodeJwt } from '@src/auth/utilities/methods';
+import { AuthHeader } from '@src/auth/interfaces';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  private readonly jwtSecretKey =
-    this.configService.get<string>('JWT_SECRET_KEY');
   constructor(
-    private readonly configService: ConfigService,
-    private readonly cacheService: CacheService,
-    private readonly usersService: UsersService,
+    private readonly authService: AuthService,
+    private readonly reflector: Reflector,
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    const isAuthDisable =
+      this.reflector.get<string[]>('isAuthDisable', context.getClass()) ||
+      this.reflector.get<string[]>('isAuthDisable', context.getHandler());
+
+    if (isAuthDisable) {
+      return true;
+    }
+
     const request = context.switchToHttp().getRequest();
-    const { authorization } = request.headers;
+    const { authorization } = request.headers as AuthHeader;
 
-    if (!authorization) {
+    const user = await this.authService.validateAutorization(authorization);
+    console.log(user, '++++++++++++++++++');
+    if (!user) {
       return false;
+    } else {
+      request.user = user;
+      return true;
     }
-    const [type, token] = authorization.split(' ');
-
-    if (type !== AuthTokenType.Bearer) {
-      return false;
-    }
-
-    const jwtObject = decodeJwt(token, this.jwtSecretKey);
-
-    if (
-      !jwtObject.isValid ||
-      (jwtObject.payload && jwtObject.payload.tokenName !== TokenNames.ACCESS)
-    ) {
-      return false;
-    }
-
-    if (await this.cacheService.get(token)) {
-      return false;
-    }
-
-    const { payload: { sub = '' } = {} } = jwtObject;
-    const currentUsers = await this.usersService.getUser(sub);
-    if (!currentUsers) {
-      return false;
-    }
-
-    request.user = currentUsers;
-
-    return true;
   }
 }

@@ -1,7 +1,7 @@
 import { Document } from 'mongoose';
 import { ObjectID } from 'mongodb';
 
-export interface IProductDoa extends Document {
+export interface IProductDao extends Document {
   readonly id: string;
   readonly sellerId: typeof ObjectID;
   readonly name: string;

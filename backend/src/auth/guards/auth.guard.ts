@@ -3,7 +3,7 @@ import { Reflector } from '@nestjs/core';
 
 import { AuthService } from '@src/auth/auth.service';
 
-import { AuthHeader } from '@src/auth/interfaces';
+import { IAuthHeader } from '@src/auth/interfaces';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -21,10 +21,10 @@ export class AuthGuard implements CanActivate {
     }
 
     const request = context.switchToHttp().getRequest();
-    const { authorization } = request.headers as AuthHeader;
+    const { authorization } = request.headers as IAuthHeader;
 
     const user = await this.authService.validateAutorization(authorization);
-    console.log(user, '++++++++++++++++++');
+
     if (!user) {
       return false;
     } else {

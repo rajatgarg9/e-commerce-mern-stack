@@ -1,3 +1,3 @@
-import { SignUpResponse } from './sign-up-response.interface';
+import { ISignUpResponse } from './sign-up-response.interface';
 
-export type LoginResponse = SignUpResponse;
+export type ILoginResponse = ISignUpResponse;

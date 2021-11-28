@@ -13,11 +13,11 @@ import { createJwt, decodeJwt } from '@src/auth/utilities/methods';
 import { LoginDto, SignUpDto } from '@src/auth/dto';
 
 import {
-  SignUpResponse,
-  LoginResponse,
+  ISignUpResponse,
+  ILoginResponse,
   IJwtDataWithStatus,
   ICreateJwtResponse,
-  TokenRefreshResponse,
+  ITokenRefreshResponse,
 } from './interfaces';
 
 import { AuthTokenType, TokenNames } from '@src/auth/enums';
@@ -46,7 +46,7 @@ export class AuthService {
     private readonly configService: ConfigService,
     private readonly cacheService: CacheService,
   ) {}
-  async signUp(signUpDto: SignUpDto): Promise<SignUpResponse> {
+  async signUp(signUpDto: SignUpDto): Promise<ISignUpResponse> {
     const { email } = signUpDto || {};
     const currentUsers = await this.usersService.getUserByEmail(email);
 
@@ -72,7 +72,7 @@ export class AuthService {
     };
   }
 
-  async login(loginDto: LoginDto): Promise<LoginResponse> {
+  async login(loginDto: LoginDto): Promise<ILoginResponse> {
     const { email, password } = loginDto || {};
 
     const currentUser = await this.usersService.getUserByEmail(email);
@@ -106,7 +106,7 @@ export class AuthService {
     this.blacklistJwtToken(refreshToken);
   }
 
-  async tokenRefresh(refreshToken: string): Promise<TokenRefreshResponse> {
+  async tokenRefresh(refreshToken: string): Promise<ITokenRefreshResponse> {
     const tokenDecodedData: IJwtDataWithStatus = decodeJwt(
       refreshToken,
       this.jwtSecretKey,

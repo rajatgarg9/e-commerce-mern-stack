@@ -8,7 +8,6 @@ export class UsersController {
 
   @Get('/@me')
   async getUser(@Body() data: any): Promise<any> {
-    console.log('+++++++++++++++++++++');
     return 'Hello World';
     return this.usersService.getUser(data.userId);
   }

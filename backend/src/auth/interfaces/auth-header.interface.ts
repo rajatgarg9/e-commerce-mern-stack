@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class AuthHeader {
+export class IAuthHeader {
   @IsNotEmpty()
   authorization: string;
 }

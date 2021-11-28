@@ -1,6 +1,6 @@
 import { AuthTokenType } from '@src/auth/enums';
 
-export interface AccessTokenInfo {
+export interface IAccessTokenInfo {
   accessToken: string;
   expiresIn: number;
   tokenType: AuthTokenType;

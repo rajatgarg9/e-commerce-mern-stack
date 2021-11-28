@@ -1,5 +1,5 @@
-import { AccessTokenInfo } from './access-token-info.interface';
+import { IAccessTokenInfo } from './access-token-info.interface';
 
-export interface SignUpResponse extends AccessTokenInfo {
+export interface ISignUpResponse extends IAccessTokenInfo {
   refreshToken: string;
 }

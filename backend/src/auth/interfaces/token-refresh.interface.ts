@@ -1,3 +1,3 @@
-import { AccessTokenInfo } from './access-token-info.interface';
+import { IAccessTokenInfo } from './access-token-info.interface';
 
-export type TokenRefreshResponse = AccessTokenInfo;
+export type ITokenRefreshResponse = IAccessTokenInfo;

@@ -24,7 +24,7 @@ export class AuthGuard implements CanActivate {
       this.reflector.get<string[]>('isAuthDisable', context.getHandler());
 
     if (isAuthDisable) {
-      throw new UnauthorizedException(UNAUTHORIZED);
+      return true;
     }
 
     const request = context.switchToHttp().getRequest();

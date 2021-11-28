@@ -1,7 +1,14 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import {
+  Injectable,
+  CanActivate,
+  ExecutionContext,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
 import { AuthService } from '@src/auth/auth.service';
+
+import { UNAUTHORIZED } from '@src/auth/utilities/messages';
 
 import { IAuthHeader } from '@src/auth/interfaces';
 
@@ -17,7 +24,7 @@ export class AuthGuard implements CanActivate {
       this.reflector.get<string[]>('isAuthDisable', context.getHandler());
 
     if (isAuthDisable) {
-      return true;
+      throw new UnauthorizedException(UNAUTHORIZED);
     }
 
     const request = context.switchToHttp().getRequest();
@@ -26,7 +33,7 @@ export class AuthGuard implements CanActivate {
     const user = await this.authService.validateAutorization(authorization);
 
     if (!user) {
-      return false;
+      throw new UnauthorizedException(UNAUTHORIZED);
     } else {
       request.user = user;
       return true;

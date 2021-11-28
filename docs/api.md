@@ -120,7 +120,8 @@
 ```js
 {
      id:string,
-     name:string
+     name:string,
+     email:string
 }
 ```
 
@@ -131,7 +132,9 @@
 &nbsp;&nbsp;**Header:**
 
 ```js
-  Authorization: Bearer <accessToken>
+{
+  refresh_token: string;
+}
 ```
 
 **Response:**
@@ -145,14 +148,17 @@
 }
 ```
 
-## `4. /api/v1/auth/token/revoke`
+## `4. /api/v1/auth/logout`
 
 **Request:**  
 &nbsp;&nbsp;**Method:** `POST`  
 &nbsp;&nbsp;**Header:**
 
 ```js
-  auth header
+{
+   authorization: 'Bearer <accessToken>',
+   refresh_token: string
+}
 ```
 
 **Response:**
@@ -169,7 +175,9 @@
 &nbsp;&nbsp;**Header:**
 
 ```js
-  auth header
+{
+    authorization: Bearer <accessToken>
+}
 ```
 
 **Response:**  
@@ -178,7 +186,8 @@
 ```js
 {
      id:string,
-     name:string
+     name:string,
+     email:string
 }
 ```
 

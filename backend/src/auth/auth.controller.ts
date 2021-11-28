@@ -29,17 +29,18 @@ export class AuthController {
 
   @Post('/logout')
   async logout(
-    @Headers() headers: IAuthHeader & { refreshToken: string },
+    @Headers() headers: IAuthHeader & { refresh_token: string },
   ): Promise<void> {
-    const { authorization, refreshToken } = headers || {};
+    const { authorization, refresh_token: refreshToken } = headers || {};
     return this.authService.logout(authorization, refreshToken);
   }
 
   @Post('/token/refresh')
   async tokenRefresh(
-    @Headers() headers: { refreshToken: string },
+    @Headers() headers: { refresh_token: string },
   ): Promise<ITokenRefreshResponse> {
-    const { refreshToken = '' } = headers || {};
+    const { refresh_token: refreshToken = '' } = headers || {};
+
     return this.authService.tokenRefresh(refreshToken);
   }
 }

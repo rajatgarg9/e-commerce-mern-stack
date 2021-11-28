@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
 
-export interface IOrder extends Document {
+export interface IOrderDoa extends Document {
   readonly id: string;
   readonly userId: string;
   readonly createdAt: Date;

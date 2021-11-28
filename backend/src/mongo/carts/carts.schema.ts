@@ -1,10 +1,10 @@
 import { Schema } from 'mongoose';
 
-import { ICart } from './carts.interface';
+import { ICartDoa } from './carts.doa';
 
 import { PRODUCTS_COLLECTION } from '@src/mongo/products/products.collection';
 
-export const CartSchema = new Schema<ICart>({
+export const CartSchema = new Schema<ICartDoa>({
   userId: { type: String, required: true, unique: true },
   createdAt: {
     type: Date,

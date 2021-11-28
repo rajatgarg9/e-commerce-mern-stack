@@ -1,4 +1,8 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 import { CacheService } from '@src/redis/cache.service';
@@ -6,13 +10,14 @@ import { UsersService } from '@src/users/users.service';
 
 import { createJwt, decodeJwt } from '@src/auth/utilities/methods';
 
-import { LoginDto, SignUpDto, LogoutDto } from '@src/auth/dto';
+import { LoginDto, SignUpDto } from '@src/auth/dto';
 
 import {
   SignUpResponse,
   LoginResponse,
   IJwtDataWithStatus,
   ICreateJwtResponse,
+  TokenRefreshResponse,
 } from './interfaces';
 
 import { AuthTokenType, TokenNames } from '@src/auth/enums';
@@ -21,11 +26,13 @@ import {
   DUPLICATE_USER,
   INVALID_EMAIL,
   INVALID_PASSWORD,
+  FORBIDDEN,
 } from '@src/auth/utilities/messages';
 
 import {
   getHashedPassword,
   comparePassword,
+  getSplitedAuthorizationHeader,
 } from '@src/auth/utilities/methods';
 
 @Injectable()
@@ -91,10 +98,32 @@ export class AuthService {
     };
   }
 
-  async logout(logoutDto: LogoutDto): Promise<void> {
-    const { accessToken, refreshToken } = logoutDto || {};
+  async logout(authorization: string, refreshToken: string): Promise<void> {
+    const { token: accessToken = '' } =
+      getSplitedAuthorizationHeader(authorization);
+
     this.blacklistJwtToken(accessToken);
     this.blacklistJwtToken(refreshToken);
+  }
+
+  async tokenRefresh(refreshToken: string): Promise<TokenRefreshResponse> {
+    const tokenDecodedData: IJwtDataWithStatus = decodeJwt(
+      refreshToken,
+      this.jwtSecretKey,
+    );
+
+    const { payload: { tokenName = '', sub = '' } = {} } =
+      tokenDecodedData || {};
+    if (tokenDecodedData.isValid && tokenName === TokenNames.REFRESH) {
+      const { jwtToken, expiresIn } = this.getAccessToken(sub) || {};
+      return {
+        accessToken: jwtToken,
+        expiresIn,
+        tokenType: AuthTokenType.Bearer,
+      };
+    } else {
+      throw new ForbiddenException(FORBIDDEN);
+    }
   }
 
   async blacklistJwtToken(token: string) {

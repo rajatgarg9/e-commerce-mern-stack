@@ -1,7 +1,7 @@
 import { Document } from 'mongoose';
 import { ObjectID } from 'mongodb';
 
-export interface ICart extends Document {
+export interface ICartDoa extends Document {
   readonly id: string;
   readonly userId: string;
   readonly modifiedAt: Date;

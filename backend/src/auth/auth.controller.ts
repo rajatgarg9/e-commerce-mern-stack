@@ -1,9 +1,14 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Headers } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
-import { SignUpDto, LoginDto, LogoutDto } from '@src/auth/dto';
+import { SignUpDto, LoginDto } from '@src/auth/dto';
 
-import { SignUpResponse, LoginResponse } from '@src/auth/interfaces';
+import {
+  SignUpResponse,
+  LoginResponse,
+  TokenRefreshResponse,
+  AuthHeader,
+} from '@src/auth/interfaces';
 
 @Controller('auth')
 export class AuthController {
@@ -20,7 +25,18 @@ export class AuthController {
   }
 
   @Post('/logout')
-  async logout(@Body() logoutDto: LogoutDto): Promise<void> {
-    return this.authService.logout(logoutDto);
+  async logout(
+    @Headers() headers: AuthHeader & { refreshToken: string },
+  ): Promise<void> {
+    const { authorization, refreshToken } = headers || {};
+    return this.authService.logout(authorization, refreshToken);
+  }
+
+  @Post('/token/refresh')
+  async tokenRefresh(
+    @Headers() headers: { refreshToken: string },
+  ): Promise<TokenRefreshResponse> {
+    const { refreshToken = '' } = headers || {};
+    return this.authService.tokenRefresh(refreshToken);
   }
 }

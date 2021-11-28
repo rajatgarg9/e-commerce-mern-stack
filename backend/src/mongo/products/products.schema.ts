@@ -1,9 +1,9 @@
 import { Schema } from 'mongoose';
 
-import { IProduct } from './products.interface';
+import { IProductDoa } from './products.doa';
 import { USERS_COLLECTION } from '@src/mongo/users/users.collection';
 
-export const ProuctSchema = new Schema<IProduct>({
+export const ProuctSchema = new Schema<IProductDoa>({
   name: { type: String, required: true },
   sellerId: {
     type: Schema.Types.ObjectId,
@@ -13,7 +13,7 @@ export const ProuctSchema = new Schema<IProduct>({
   imageUrl: { type: String, required: true },
   availableQuantity: { type: Number, required: true },
   price: {
-    type: new Schema<IProduct['price']>({
+    type: new Schema<IProductDoa['price']>({
       amount: { type: Number, required: true },
       currency: { type: String, required: true },
     }),

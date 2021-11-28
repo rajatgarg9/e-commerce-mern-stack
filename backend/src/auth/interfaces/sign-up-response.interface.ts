@@ -1,8 +1,5 @@
-import { AuthTokenType } from '@src/auth/enums';
+import { AccessTokenInfo } from './access-token-info.interface';
 
-export interface SignUpResponse {
-  accessToken: string;
+export interface SignUpResponse extends AccessTokenInfo {
   refreshToken: string;
-  expiresIn: number;
-  tokenType: AuthTokenType;
 }

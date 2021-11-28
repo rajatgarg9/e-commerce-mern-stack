@@ -4,14 +4,14 @@ import { Model } from 'mongoose';
 import { Logger } from '@nestjs/common';
 
 import { USERS_COLLECTION } from '@src/mongo/users/users.collection';
-import { IUser } from '@src/mongo/users/users.interface';
+import { IUserDoa } from '@src/mongo/users/users.doa';
 
 @Injectable()
 export class UsersService {
   private readonly logger = new Logger(UsersService.name);
 
   constructor(
-    @InjectModel(USERS_COLLECTION.name) private userModel: Model<IUser>,
+    @InjectModel(USERS_COLLECTION.name) private userModel: Model<IUserDoa>,
   ) {}
 
   async getUser(id: string): Promise<any> {

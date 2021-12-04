@@ -8,7 +8,12 @@ import { IProductDao } from '@src/mongo/products/products.dao';
 
 import { CreateProductDTO, PatchProductDTO } from '@src/products/dto';
 
-import { IProductResponse } from '@src/products/interfaces';
+import {
+  IGetAllProductsResponse,
+  IProductResponse,
+} from '@src/products/interfaces';
+
+import { IPaginationQueryParam } from '@src/interfaces';
 
 import { IUserDao } from '@src/mongo/users/users.dao';
 
@@ -25,12 +30,38 @@ export class ProductsService {
     private productModel: Model<IProductDao>,
   ) {}
 
-  async getAllProducts(): Promise<IProductResponse[]> {
-    const productList = await this.productModel.find()?.populate<{
-      sellerId: IUserDao;
-    }>('sellerId');
+  async getAllProducts(
+    getAllProductsQueryParam: IPaginationQueryParam,
+  ): Promise<IGetAllProductsResponse> {
+    const { page = 1, limit = 20 } = getAllProductsQueryParam || {};
 
-    return productList?.map((item) => getFormattedProductForResponse(item));
+    const countPromise = this.productModel.countDocuments();
+    const productListPromise = this.productModel
+      .find()
+      .skip((page - 1) * limit)
+      .limit(limit)
+      ?.populate<{
+        sellerId: IUserDao;
+      }>('sellerId');
+
+    const [total, productList] = await Promise.all([
+      countPromise,
+      productListPromise,
+    ]);
+
+    const products = productList?.map((item) =>
+      getFormattedProductForResponse(item),
+    );
+
+    return {
+      products,
+      pagination: {
+        limit,
+        lastPage: Math.ceil(total / limit),
+        currentPage: page,
+        total,
+      },
+    };
   }
 
   async patchProduct(

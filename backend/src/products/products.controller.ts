@@ -7,17 +7,21 @@ import {
   Body,
   Req,
   Param,
+  Query,
 } from '@nestjs/common';
 
 import { ProductsService } from './products.service';
 
-import { IProductResponse } from '@src/products/interfaces';
+import {
+  IGetAllProductsResponse,
+  IProductResponse,
+} from '@src/products/interfaces';
 
 import { CreateProductDTO, PatchProductDTO } from '@src/products/dto';
 
 import { DisableAuthDecorator } from '@src/auth/decorators/disable-auth.decorator';
 
-import { IRequest } from '@src/interfaces';
+import { IRequest, IPaginationQueryParam } from '@src/interfaces';
 
 @Controller('products')
 export class ProductsController {
@@ -25,11 +29,14 @@ export class ProductsController {
 
   @Get('/')
   @DisableAuthDecorator()
-  async getAllProducts(): Promise<IProductResponse[]> {
-    return this.productsService.getAllProducts();
+  async getAllProducts(
+    @Query() getAllProductsQueryParam: IPaginationQueryParam,
+  ): Promise<IGetAllProductsResponse> {
+    return this.productsService.getAllProducts(getAllProductsQueryParam);
   }
 
   @Get('/:id')
+  @DisableAuthDecorator()
   async getProduct(@Param('id') id): Promise<IProductResponse> {
     return this.productsService.getProduct(id);
   }

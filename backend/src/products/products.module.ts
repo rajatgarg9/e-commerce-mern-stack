@@ -10,5 +10,6 @@ import { PRODUCTS_COLLECTION } from '@src/mongo/products/products.collection';
   imports: [MongooseModule.forFeature([PRODUCTS_COLLECTION])],
   controllers: [ProductsController],
   providers: [ProductsService],
+  exports: [ProductsService],
 })
 export class ProductsModule {}

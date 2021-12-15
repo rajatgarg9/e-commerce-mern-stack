@@ -18,6 +18,7 @@ export const CartSchema = new Schema<ICartDao>({
   },
   products: [
     {
+      _id: false,
       id: {
         type: Schema.Types.ObjectId,
         ref: PRODUCTS_COLLECTION.name,
@@ -29,7 +30,6 @@ export const CartSchema = new Schema<ICartDao>({
         required: true,
         default: new Date(),
       },
-      required: true,
     },
   ],
 });

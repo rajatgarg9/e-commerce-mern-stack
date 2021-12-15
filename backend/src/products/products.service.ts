@@ -151,4 +151,15 @@ export class ProductsService {
       _id: productId,
     });
   }
+
+  async isProductInStock(productId: string): Promise<boolean> {
+    if (!MongooseTypes.ObjectId.isValid(productId)) {
+      throw new BadRequestException(PRODUCT_NOT_FOUND);
+    }
+
+    return this.productModel.exists({
+      _id: productId,
+      availableQuantity: { $gte: 1 },
+    });
+  }
 }

@@ -48,7 +48,7 @@ export class ProductsController {
   ): Promise<IProductResponse> {
     const { user } = req;
 
-    return this.productsService.createProduct(createProductDTO, user.id);
+    return this.productsService.createProduct(createProductDTO, user?.id);
   }
 
   @Patch('/:id')
@@ -59,13 +59,13 @@ export class ProductsController {
   ): Promise<IProductResponse> {
     const { user } = req;
 
-    return this.productsService.patchProduct(patchProductDTO, id, user.id);
+    return this.productsService.patchProduct(patchProductDTO, id, user?.id);
   }
 
   @Delete('/:id')
   async deleteProduct(@Param('id') id, @Req() req: IRequest): Promise<void> {
     const { user } = req;
 
-    return this.productsService.deleteProduct(id, user.id);
+    return this.productsService.deleteProduct(id, user?.id);
   }
 }

@@ -62,9 +62,9 @@ export class AuthService {
       password: hashedPassord,
     });
     const { jwtToken: accessToken, expiresIn } = this.getAccessToken(
-      newUser.id,
+      newUser?.id,
     );
-    const { jwtToken: refreshToken } = this.getRefreshToken(newUser.id);
+    const { jwtToken: refreshToken } = this.getRefreshToken(newUser?.id);
 
     return {
       accessToken,
@@ -88,9 +88,9 @@ export class AuthService {
     }
 
     const { jwtToken: accessToken, expiresIn } = this.getAccessToken(
-      currentUser.id,
+      currentUser?.id,
     );
-    const { jwtToken: refreshToken } = this.getRefreshToken(currentUser.id);
+    const { jwtToken: refreshToken } = this.getRefreshToken(currentUser?.id);
 
     return {
       accessToken,

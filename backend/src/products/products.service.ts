@@ -101,6 +101,8 @@ export class ProductsService {
       product.availableQuantity = availableQuantity;
     }
 
+    product.lateUpdatedAt = new Date();
+
     await product.save();
 
     const populatedProduct = await product?.populate<{ sellerId: IUserDao }>(

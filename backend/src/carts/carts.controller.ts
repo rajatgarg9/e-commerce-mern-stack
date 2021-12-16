@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Put,
-  Post,
-  Delete,
-  Body,
-  Param,
-  Req,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Req, Put } from '@nestjs/common';
 
 import { CartsService } from '@src/carts/carts.service';
 
@@ -37,7 +28,7 @@ export class CartsController {
     return this.cartsService.addProduct(addProductDto, productId, user?.id);
   }
 
-  @Post('/empty-cart')
+  @Put('/empty-cart')
   async emptyCart(@Req() req: IRequest): Promise<void> {
     const { user } = req || {};
     return this.cartsService.emptyCart(user?.id);

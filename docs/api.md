@@ -7,7 +7,10 @@
 ```js
      {
        id:string,
-       sellerId:string,
+       seller:{
+         id:string,
+         name:string,
+       },
        name:string,
        imageUrl:string,
        price:{
@@ -20,20 +23,28 @@
      }
 ```
 
-### **`Cart Product Object`**
+### **`Cart Object`**
 
 ```js
      {
        id:string,
-       name:string,
-       imageUrl:string,
-       selectedQuantity:number,
-       price:{
-           amount:number,
-           currency:string
-       },
-       addedAt:Date(ISO string),
-       lastUpdatedAt:Date(ISO string)
+       lastUpdatedAt:Date(ISO string),
+       products:[{
+          id: string,
+          name: string,
+          seller: {
+              id: string,
+              name: string,
+            },
+          imageUrl:string,
+          addedAt:Date(ISO string),
+          selectedQuantity: number,
+          availableQuantity: number,
+          price:{
+              amount:number,
+              currency:string
+            }
+         }],
      }
 ```
 
@@ -42,38 +53,26 @@
 ```js
      {
        id:string,
-       orderedAt:Date(ISO string),
+       createdAt:Date(ISO string),
        address:string,
        paid:{
            amount:number,
            currency:string
-        }
+        },
        products:[{
+         id:string,
          name:string,
          imageUrl:string,
-          price:{
+         purchasedQuantity:number,
+         price:{
            amount:number,
            currency:string
-          },
-          selectedQuantity:number,
+           },
+         seller: {
+              id: string,
+              name: string,
+            }
         }]
-     }
-```
-
-### **`Order Product Object`**
-
-```js
-     {
-       id:string,
-       name:string,
-       imageUrl:string,
-       price:{
-           amount:number,
-           currency:string
-       },
-       selectedQuantity:number,
-       addedAt:Date(ISO string),
-       lastUpdatedAt:Date(ISO string)
      }
 ```
 
@@ -119,9 +118,10 @@
 
 ```js
 {
-     id:string,
-     name:string,
-     email:string
+    accessToken:string,
+    refreshToken:string,
+    expiresIn:string(seconds)
+    tokenType:string(Bearer)
 }
 ```
 
@@ -142,7 +142,6 @@
 ```js
 {
     accessToken:string,
-    refreshToken:string,
     expiresIn:string(seconds)
     tokenType:string(Bearer)
 }
@@ -208,7 +207,10 @@
 &nbsp;&nbsp;**Query Params:**
 
 ```js
-Page: number;
+{
+   page: number,
+   limit: number;
+}
 ```
 
 **Response:**  
@@ -226,7 +228,7 @@ pagination:{
 }
 ```
 
-## `7. /api/v1/product`
+## `7. /api/v1/products/product`
 
 **Request:**  
 &nbsp;&nbsp;**Method:** `POST`  
@@ -239,7 +241,15 @@ pagination:{
 &nbsp;&nbsp;**Body:**
 
 ```js
-  Product Object without id
+  {
+    name:string,
+    imageUrl:string,
+    availableQuantity: number,
+    price:{
+           amount:number,
+           currency:string
+       }
+  }
 ```
 
 **Response:**  
@@ -269,7 +279,7 @@ Product Object
 ## `9. /api/v1/products/:productId`
 
 **Request:**  
-&nbsp;&nbsp;**Method:** `PUT`  
+&nbsp;&nbsp;**Method:** `PATCH`  
 &nbsp;&nbsp;**Header:**
 
 ```js
@@ -279,7 +289,16 @@ Product Object
 &nbsp;&nbsp;**Body:**
 
 ```js
-  Product Object
+  {
+    // all are optionals
+    name:string,
+    imageUrl:string,
+    availableQuantity: number,
+    price:{
+           amount:number,
+           currency:string
+       }
+  }
 ```
 
 **Response:**  
@@ -321,15 +340,15 @@ Product Object
 &nbsp;&nbsp;**Success:**
 
 ```js
-[
-    Cart Product Object
-]
+ [
+    Cart Object
+ ]
 ```
 
 ## `12. /api/v1/users/@me/cart/:productId`
 
 **Request:**  
-&nbsp;&nbsp;**Method:** `PATCH` , `POST`  
+&nbsp;&nbsp;**Method:** `POST`  
 &nbsp;&nbsp;**Header:**
 
 ```js
@@ -348,34 +367,26 @@ Product Object
 &nbsp;&nbsp;**Success:**
 
 ```js
-[
-    Cart Product Object
-]
+{
+    ...Cart Object
+}
 ```
 
-## `13. /api/v1/users/@me/cart`
+## `13. /api/v1/users/@me/empty-cart`
 
 **Request:**  
-&nbsp;&nbsp;**Method:** `DELETE`  
+&nbsp;&nbsp;**Method:** `PUT`  
 &nbsp;&nbsp;**Header:**
 
 ```js
   auth header
 ```
 
-&nbsp;&nbsp;**Body:**
-
-```
-productId=[id], if empty array then all products will be deleted
-```
-
 **Response:**  
 &nbsp;&nbsp;**Success:**
 
 ```js
-[
-    Cart Product Object
-]
+[];
 ```
 
 ## `14. /api/v1/users/@me/orders`
@@ -393,7 +404,7 @@ productId=[id], if empty array then all products will be deleted
 
 ```js
 [
-    Order Product Object
+    Order Object
 ]
 ```
 
@@ -411,5 +422,5 @@ productId=[id], if empty array then all products will be deleted
 &nbsp;&nbsp;**Success:**
 
 ```js
-  Order Product Object
+  Order Object
 ```

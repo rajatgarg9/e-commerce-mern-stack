@@ -8,6 +8,6 @@ export interface ICartProductResponse
 
 export interface ICartResponse {
   id: string;
-  modifiedAt: Date;
+  lastUpdatedAt: Date;
   products: ICartProductResponse[];
 }

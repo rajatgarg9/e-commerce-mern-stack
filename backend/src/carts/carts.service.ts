@@ -96,7 +96,7 @@ export class CartsService {
       } as any);
     }
 
-    cart.modifiedAt = new Date();
+    cart.lastUpdatedAt = new Date();
 
     const cartWithProductPopulate = await cart.populate('products.id');
 

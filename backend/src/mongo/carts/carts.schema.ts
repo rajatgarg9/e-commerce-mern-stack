@@ -11,7 +11,7 @@ export const CartSchema = new Schema<ICartDao>({
     required: true,
     default: new Date(),
   },
-  modifiedAt: {
+  lastUpdatedAt: {
     type: Date,
     required: true,
     default: new Date(),

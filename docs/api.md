@@ -16,7 +16,7 @@
        },
        availableQuantity:number,
        createdAt:Date(ISO string),
-       modifiedAt:Date(ISO string)
+       lastUpdatedAt:Date(ISO string)
      }
 ```
 
@@ -33,7 +33,7 @@
            currency:string
        },
        addedAt:Date(ISO string),
-       modifiedAt:Date(ISO string)
+       lastUpdatedAt:Date(ISO string)
      }
 ```
 
@@ -73,7 +73,7 @@
        },
        selectedQuantity:number,
        addedAt:Date(ISO string),
-       modifiedAt:Date(ISO string)
+       lastUpdatedAt:Date(ISO string)
      }
 ```
 

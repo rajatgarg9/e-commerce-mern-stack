@@ -4,7 +4,7 @@ import { ObjectID } from 'mongodb';
 export interface ICartDao extends Document {
   readonly id: string;
   readonly userId: string;
-  modifiedAt: Date;
+  lastUpdatedAt: Date;
   readonly createdAt: Date;
   products: [
     {

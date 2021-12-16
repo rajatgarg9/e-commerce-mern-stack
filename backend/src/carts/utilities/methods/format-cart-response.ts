@@ -3,7 +3,7 @@ import { ICartResponse, ICartProductResponse } from '@src/carts/interfaces';
 import { ICartDao } from '@src/mongo/carts/carts.dao';
 
 export function getFormattedCartResponse(cart: ICartDao): ICartResponse {
-  const { id, modifiedAt, products = [] } = cart || {};
+  const { id, lastUpdatedAt, products = [] } = cart || {};
 
   const formattedProducts = products?.map((item): ICartProductResponse => {
     const { selectedQuantity, addedAt, id: product } = item;
@@ -33,7 +33,7 @@ export function getFormattedCartResponse(cart: ICartDao): ICartResponse {
 
   const formattedCart = {
     id,
-    modifiedAt,
+    lastUpdatedAt,
     products: formattedProducts,
   };
 

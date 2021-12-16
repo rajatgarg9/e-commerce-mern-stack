@@ -11,20 +11,19 @@ export const OrderSchema = new Schema<IOrderDao>({
   },
   products: [
     {
-      id: { type: Number, required: true },
+      _id: false,
+      id: { type: String, required: true },
       name: { type: String, required: true },
       seller: {
         id: { type: String, required: true },
         name: { type: String, required: true },
-        required: true,
       },
       imageUrl: { type: String, required: true },
-      purchasedQuantity: { type: Number, required: true },
+      purchasedQuantity: { type: Number, required: true, min: 0 },
       price: {
-        amount: { type: Number, required: true },
+        amount: { type: Number, required: true, min: 0 },
         currency: { type: String, required: true },
       },
-      required: true,
     },
   ],
 });

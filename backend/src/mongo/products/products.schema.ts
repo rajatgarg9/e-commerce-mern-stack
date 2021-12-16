@@ -11,9 +11,9 @@ export const ProuctSchema = new Schema<IProductDao>({
     required: true,
   },
   imageUrl: { type: String, required: true },
-  availableQuantity: { type: Number, required: true },
+  availableQuantity: { type: Number, required: true, min: 0 },
   price: {
-    amount: { type: Number, required: true },
+    amount: { type: Number, required: true, min: 0 },
     currency: { type: String, required: true },
   },
   lateUpdatedAt: {

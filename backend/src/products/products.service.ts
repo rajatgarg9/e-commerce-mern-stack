@@ -162,4 +162,26 @@ export class ProductsService {
       availableQuantity: { $gte: 1 },
     });
   }
+
+  async updatePurchasedProducts(
+    productList: { productId: string; purchasedQuantity: number }[],
+  ) {
+    const bulkArray = [];
+
+    for (let i = 0; i < productList.length; ++i) {
+      const { productId, purchasedQuantity } = productList[i];
+      bulkArray.push({
+        updateOne: {
+          filter: { _id: new MongooseTypes.ObjectId(productId) },
+          update: {
+            $inc: {
+              availableQuantity: -purchasedQuantity,
+            },
+          },
+        },
+      });
+    }
+
+    return this.productModel.bulkWrite(bulkArray);
+  }
 }

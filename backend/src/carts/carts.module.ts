@@ -13,5 +13,6 @@ import { CARTS_COLLECTION } from '@src/mongo/carts/carts.collection';
   imports: [MongooseModule.forFeature([CARTS_COLLECTION]), ProductsModule],
   providers: [CartsService],
   controllers: [CartsController],
+  exports: [CartsService],
 })
 export class CartsModule {}

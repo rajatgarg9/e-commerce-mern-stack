@@ -24,7 +24,7 @@ export const CartSchema = new Schema<ICartDao>({
         ref: PRODUCTS_COLLECTION.name,
         required: true,
       },
-      selectedQuantity: { type: Number, required: true },
+      selectedQuantity: { type: Number, required: true, min: 0 },
       addedAt: {
         type: Date,
         required: true,

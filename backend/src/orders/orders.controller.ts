@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Req } from '@nestjs/common';
+import { Controller, Get, Post, Req, Body } from '@nestjs/common';
 
 import { OrdersService } from '@src/orders/orders.service';
 
 import { ISinglBaseOrder } from '@src/orders/interfaces';
+
+import { CreateOrderDto } from '@src/orders/dto';
 
 import { IRequest } from '@src/interfaces';
 
@@ -16,8 +18,11 @@ export class OrdersController {
     return this.ordersService.getAllOrders(user?.id);
   }
   @Post('/order')
-  async createOrder(@Req() req: IRequest): Promise<ISinglBaseOrder> {
+  async createOrder(
+    @Req() req: IRequest,
+    @Body() createOrderDto: CreateOrderDto,
+  ): Promise<ISinglBaseOrder> {
     const { user } = req || {};
-    return this.ordersService.createOrder(user?.id);
+    return this.ordersService.createOrder(user?.id, createOrderDto);
   }
 }

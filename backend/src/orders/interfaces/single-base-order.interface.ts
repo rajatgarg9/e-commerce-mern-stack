@@ -1,4 +1,4 @@
-import { IBaseProduct } from '@src/products/interfaces';
+import { IBaseProduct, IProductPrice } from '@src/products/interfaces';
 
 export interface IBaseOrderProduct
   extends Omit<
@@ -6,7 +6,7 @@ export interface IBaseOrderProduct
     'availableQuantity' | 'lateUpdatedAt' | 'createdAt'
   > {
   id: string;
-  purchasedQuantity: string;
+  purchasedQuantity: number;
   seller: {
     id: string;
     name: string;
@@ -16,5 +16,7 @@ export interface IBaseOrderProduct
 export interface ISinglBaseOrder {
   id: string;
   createdAt: Date;
-  products: IBaseOrderProduct;
+  address: string;
+  paid: IProductPrice;
+  products: IBaseOrderProduct[];
 }

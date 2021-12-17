@@ -9,6 +9,11 @@ export const OrderSchema = new Schema<IOrderDao>({
     required: true,
     default: new Date(),
   },
+  address: { type: String, required: true },
+  paid: {
+    amount: { type: Number, required: true, min: 0 },
+    currency: { type: String, required: true },
+  },
   products: [
     {
       _id: false,

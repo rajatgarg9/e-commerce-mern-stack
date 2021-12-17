@@ -17,6 +17,8 @@ import { ISinglBaseOrder } from '@src/orders/interfaces';
 import { EMPTY_CART } from '@src/orders/utilities/message';
 import { getFormattedOrder } from '@src/orders/utilities/methods';
 
+import { CreateOrderDto } from '@src/orders/dto';
+
 import { SOMETHING_WENT_WRONG } from '@src/utilities/message';
 
 @Injectable()
@@ -34,15 +36,25 @@ export class OrdersService {
     return orderList?.map((item) => getFormattedOrder(item));
   }
 
-  async createOrder(userId: string): Promise<ISinglBaseOrder> {
+  async createOrder(
+    userId: string,
+    createOrderDto: CreateOrderDto,
+  ): Promise<ISinglBaseOrder> {
     const cart = await this.cartsService.getCart(userId);
     const cartProducts = cart.products;
     if (cartProducts?.length === 0) {
       throw new NotFoundException(EMPTY_CART);
     }
-    const bulkUpdateInputData = [];
-    const orderProductList = [];
-    const outofStockProducts = [];
+    const bulkUpdateInputData: {
+      productId: string;
+      purchasedQuantity: number;
+    }[] = [];
+    const orderProductList: IOrderDao['products'] = [];
+    const outofStockProducts: string[] = [];
+    const totalPrice = {
+      amount: 0,
+      currency: '',
+    };
 
     for (let i = 0; i < cartProducts.length; ++i) {
       const {
@@ -54,6 +66,9 @@ export class OrdersService {
         price,
         seller,
       } = cartProducts[i];
+
+      totalPrice.amount += price?.amount * selectedQuantity;
+      totalPrice.currency = price?.currency;
 
       bulkUpdateInputData.push({
         productId: id,
@@ -89,9 +104,13 @@ export class OrdersService {
 
     await this.cartsService.emptyCart(userId);
 
+    const { address } = createOrderDto;
+
     const order = await this.orderModel.create({
       userId,
       products: orderProductList,
+      paid: totalPrice,
+      address,
     });
 
     return getFormattedOrder(order);

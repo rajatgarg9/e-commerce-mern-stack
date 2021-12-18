@@ -1,3 +1,29 @@
 {
-  "extends": "next/core-web-vitals"
+  "env": {
+    "browser": true
+   },
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint","prettier"],
+  "extends": [
+    "airbnb",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "next/core-web-vitals",
+    "plugin:prettier/recommended"
+  ],
+  "parserOptions": {
+    "project": ["./tsconfig.json"]
+  },
+
+  "settings": {
+    "next": {
+      "rootDir": "./"
+    }
+  },
+  "rules": {
+    "prettier/prettier": "error",
+    "arrow-body-style": "off", // for prettier plugin
+    "prefer-arrow-callback": "off" // for prettier plugin
+  }
 }

@@ -1,0 +1,8 @@
+node_modules/
+eslintReport
+stylelintReport
+build/
+.DS_Store
+dist
+_reset.scss
+.next

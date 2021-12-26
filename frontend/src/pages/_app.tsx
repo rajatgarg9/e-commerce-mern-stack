@@ -1,9 +1,17 @@
 import type { AppProps } from "next/app";
+import { Provider } from "react-redux";
+
+import { useStore } from "src/store";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  // console.log("trd");
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
+  const store = useStore(pageProps?.initialReduxState);
 
-  return <Component {...pageProps} />;
+  return (
+    <Provider store={store}>
+      <Component {...pageProps} />
+    </Provider>
+  );
 }
 
 export default MyApp;

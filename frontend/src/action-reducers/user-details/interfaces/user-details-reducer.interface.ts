@@ -1,4 +1,4 @@
-import { IApiError } from "src/interfaces";
+import { IApiError } from "@interfaces/api-error.interface";
 
 import {
   IUserDetailsFetchStartActionResponse,
@@ -9,8 +9,8 @@ import {
 export interface IUserDetailsReducerState {
   isLoading: boolean;
   errors: IApiError;
-  email: string;
   id: string;
+  email: string;
   name: string;
 }
 

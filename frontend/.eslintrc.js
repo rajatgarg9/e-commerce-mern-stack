@@ -47,5 +47,6 @@ module.exports = {
       "error",
       { props: true, ignorePropertyModificationsFor: ["draft"] },
     ],
+    "no-plusplus": 0,
   },
 };

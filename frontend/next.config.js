@@ -9,9 +9,8 @@ module.exports = {
     config.plugins.push(
       new ESLintPlugin({
         extensions: ["ts", "tsx"],
-        failOnWarning: true,
       }),
-      new StylelintPlugin({ failOnWarning: true })
+      new StylelintPlugin({ failOnWarning: true }),
     );
 
     return config;

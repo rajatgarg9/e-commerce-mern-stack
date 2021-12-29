@@ -1,6 +1,8 @@
-import { IApiError } from "src/interfaces";
+import { IApiError } from "@interfaces/api-error.interface";
 
-import { UserDetailsActionsTypes } from "src/action-reducers/user-details/enums";
+import { UserDetailsActionsTypes } from "@action-reducers/user-details/enums/user-details-actions-types.enum";
+
+import { IUserDetailsApiResponse } from "./user-details-api-response.interface";
 
 export interface IUserDetailsFetchStartActionResponse {
   type: UserDetailsActionsTypes.USER_DETAILS_FETCH_START;
@@ -8,7 +10,7 @@ export interface IUserDetailsFetchStartActionResponse {
 
 export interface IUserDetailsFetchSuccessActionResponse {
   type: UserDetailsActionsTypes.USER_DETAILS_FETCH_SUCCESS;
-  payload: { id: string; name: string };
+  payload: IUserDetailsApiResponse;
 }
 
 export interface IUserDetailsFetchFailActionResponse {

@@ -1,10 +1,17 @@
-import { UserDetailsActionsTypes } from "./enums";
+import axios, { Canceler } from "axios";
+
+import { getApiErrorMessage } from "@utilities/methods/miscellaneous";
+import { IThunkFunction } from "@interfaces/thunk-function.interface";
+import { ITryCatchError } from "@interfaces/try-catch-error.interface";
+import { UserDetailsActionsTypes } from "./enums/user-details-actions-types.enum";
 
 import {
   IUserDetailsFetchStartActionResponse,
   IUserDetailsFetchSuccessActionResponse,
   IUserDetailsFetchFailActionResponse,
-} from "./interfaces";
+} from "./interfaces/user-details-action.interface";
+
+import { IUserDetailsApiResponse } from "./interfaces/user-details-api-response.interface";
 
 const {
   USER_DETAILS_FETCH_START,
@@ -34,3 +41,34 @@ export function userDetailsFetchFail(
     payload,
   };
 }
+
+let fetchUserDetailsApiCanceller: Canceler;
+
+export const fetchUserDetails =
+  (): IThunkFunction => async (dispatch, getState, api) => {
+    try {
+      if (fetchUserDetailsApiCanceller) {
+        fetchUserDetailsApiCanceller("Operation canceled by the user.");
+      }
+
+      dispatch(userDetailsFetchStart());
+
+      const res = await api.get<IUserDetailsApiResponse>("/users/@me", {
+        cancelToken: new axios.CancelToken(function executor(apiCanceller) {
+          // An executor function receives a cancel function as a parameter
+          fetchUserDetailsApiCanceller = apiCanceller;
+        }),
+        headers: {
+          authorization: `Bearer <accessToken>`,
+        },
+      });
+
+      dispatch(userDetailsFetchSuccess(res.data));
+    } catch (error: unknown) {
+      if (!axios.isCancel(error)) {
+        dispatch(
+          userDetailsFetchFail(getApiErrorMessage(error as ITryCatchError)),
+        );
+      }
+    }
+  };

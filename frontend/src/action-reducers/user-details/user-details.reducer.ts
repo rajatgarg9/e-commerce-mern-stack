@@ -3,9 +3,9 @@ import produce from "immer";
 import {
   IUserDetailsReducerState,
   IUserDetailsReducerActionParam,
-} from "./interfaces";
+} from "./interfaces/user-details-reducer.interface";
 
-import { UserDetailsActionsTypes } from "./enums";
+import { UserDetailsActionsTypes } from "./enums/user-details-actions-types.enum";
 
 const {
   USER_DETAILS_FETCH_START,

@@ -1,1 +1,1 @@
-export type IApiError = string[];
+export type IApiError = string[] | string;

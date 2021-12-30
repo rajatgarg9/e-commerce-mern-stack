@@ -1,13 +1,18 @@
 import { useMemo } from "react";
-import { createStore, applyMiddleware, Store } from "redux";
+import { createStore, applyMiddleware, Store, AnyAction } from "redux";
+import thunkMiddleware, { ThunkDispatch } from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import thunkMiddleware from "redux-thunk";
+import { AxiosInstance } from "axios";
 import { reducers, IRootReducerState } from "@action-reducers/root.reducer";
 
 import { axiosInstance } from "@utilities/methods/miscellaneous";
 import { getBaseApiUrl } from "@utilities/methods/getEnvironmentVariables";
 
-let store: (Store<IRootReducerState> & { dispatch: unknown }) | undefined;
+let store: // eslint-disable-next-line @typescript-eslint/ban-types
+| (Store<IRootReducerState> & {
+      dispatch: ThunkDispatch<IRootReducerState, AxiosInstance, AnyAction>;
+    })
+  | undefined;
 
 function initStore(initialState?: IRootReducerState) {
   return createStore(

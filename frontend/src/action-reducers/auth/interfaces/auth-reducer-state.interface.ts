@@ -3,7 +3,7 @@ import { IApiError } from "@interfaces/api-error.interface";
 export interface IAuthReducerMainData {
   accessToken: string;
   refreshToken: string;
-  expiresIn: string;
+  expiresIn: number;
   tokenType: string;
 }
 

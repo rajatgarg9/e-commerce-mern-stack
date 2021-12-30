@@ -20,7 +20,8 @@
       "@action-reducers/*": ["src/action-reducers/*"],
       "@components/*": ["src/components/*"],
       "@utilities/*": ["src/utilities/*"],
-      "@interfaces/*": ["src/interfaces/*"]
+      "@interfaces/*": ["src/interfaces/*"],
+      "@enums/*": ["src/enums/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

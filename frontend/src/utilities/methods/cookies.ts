@@ -14,7 +14,7 @@ export function setCookie(cname: string, cvalue: string, exdays = 1) {
   return cookie;
 }
 
-export function getCookie(cname: string, cookie: string) {
+export function getCookie(cname: string, cookie?: string): string {
   const name = `${cname}=`;
   const decodedCookie = decodeURIComponent(cookie || document.cookie);
   const ca = decodedCookie.split(";");

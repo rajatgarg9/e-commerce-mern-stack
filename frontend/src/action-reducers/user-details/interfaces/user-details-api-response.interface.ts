@@ -1,5 +1,3 @@
-export interface IUserDetailsApiResponse {
-  id: string;
-  name: string;
-  email: string;
-}
+import { IUserDetailsReducerMainData } from "./user-details-reducer.interface";
+
+export type IUserDetailsApiResponse = IUserDetailsReducerMainData;

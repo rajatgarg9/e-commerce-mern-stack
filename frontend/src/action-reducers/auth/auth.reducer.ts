@@ -18,6 +18,7 @@ const {
   AUTH_TOKEN_REFRESH_START,
   AUTH_TOKEN_REFRESH_SUCCESS,
   AUTH_TOKEN_REFRESH_FAIL,
+  AUTH_ADD_COOKIE_DETAIL,
 } = AuthActionTypes;
 
 const defaultAuthReducer: IAuthReducerState = {
@@ -30,7 +31,7 @@ const defaultAuthReducer: IAuthReducerState = {
   isTokenRefreshInProgress: false,
   accessToken: "",
   refreshToken: "",
-  expiresIn: "",
+  expiresIn: 0,
   tokenType: "",
 };
 
@@ -118,6 +119,13 @@ const authReducer = (
         return {
           ...draft,
           ...defaultAuthReducer,
+        };
+      }
+
+      case AUTH_ADD_COOKIE_DETAIL: {
+        return {
+          ...draft,
+          ...action?.payload,
         };
       }
 

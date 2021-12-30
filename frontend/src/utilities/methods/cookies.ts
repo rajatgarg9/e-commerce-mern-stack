@@ -1,6 +1,10 @@
 import { isClient } from "./miscellaneous";
 
-export function setCookie(cname: string, cvalue: string, exdays = 1) {
+export enum CookieNames {
+  AUTHORIZATION = "authorization",
+}
+
+export function setCookie(cname: CookieNames, cvalue: string, exdays = 1) {
   const d = new Date();
   d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
   const expires = `expires=${d.toUTCString()}`;
@@ -14,7 +18,7 @@ export function setCookie(cname: string, cvalue: string, exdays = 1) {
   return cookie;
 }
 
-export function getCookie(cname: string, cookie?: string): string {
+export function getCookie(cname: CookieNames, cookie?: string): string {
   const name = `${cname}=`;
   const decodedCookie = decodeURIComponent(cookie || document.cookie);
   const ca = decodedCookie.split(";");

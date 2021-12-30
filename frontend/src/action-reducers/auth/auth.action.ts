@@ -32,6 +32,7 @@ import {
   IAuthTokenRefreshStartActionResponse,
   IAuthTokenRefreshSuccessActionResponse,
   IAuthTokenRefreshFailActionResponse,
+  IAuthAddCookieDetailsActionResponse,
 } from "./interfaces/auth-action.interface";
 
 const {
@@ -47,6 +48,7 @@ const {
   AUTH_TOKEN_REFRESH_START,
   AUTH_TOKEN_REFRESH_SUCCESS,
   AUTH_TOKEN_REFRESH_FAIL,
+  AUTH_ADD_COOKIE_DETAIL,
 } = AuthActionTypes;
 
 export function authSignupStart(): IAuthSignupStartActionResponse {
@@ -136,6 +138,15 @@ export function authTokenRefreshSuccess(
 export function authTokenRefreshFail(): IAuthTokenRefreshFailActionResponse {
   return {
     type: AUTH_TOKEN_REFRESH_FAIL,
+  };
+}
+
+export function authAddCookieDetails(
+  payload: IAuthAddCookieDetailsActionResponse["payload"],
+): IAuthAddCookieDetailsActionResponse {
+  return {
+    type: AUTH_ADD_COOKIE_DETAIL,
+    payload,
   };
 }
 

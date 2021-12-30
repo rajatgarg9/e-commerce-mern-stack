@@ -1,12 +1,12 @@
-import { Dispatch } from "redux";
+import { AnyAction } from "redux";
 import { AxiosInstance } from "axios";
+import { ThunkAction } from "redux-thunk";
 
 import { IRootReducerState } from "@action-reducers/root.reducer";
 
-export interface IThunkFunction {
-  (
-    dispatch: Dispatch,
-    getState: () => IRootReducerState,
-    api: AxiosInstance,
-  ): Promise<void>;
-}
+export type IThunkFunction = ThunkAction<
+  Promise<void>,
+  IRootReducerState,
+  AxiosInstance,
+  AnyAction
+>;

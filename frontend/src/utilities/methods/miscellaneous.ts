@@ -19,5 +19,5 @@ export function getApiErrorMessage(error: ITryCatchError): IApiError {
     return error.response.data.message;
   }
 
-  return ["Something went wrong."];
+  return "Something went wrong.";
 }

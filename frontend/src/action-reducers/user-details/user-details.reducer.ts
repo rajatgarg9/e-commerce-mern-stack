@@ -1,9 +1,7 @@
 import produce from "immer";
 
-import {
-  IUserDetailsReducerState,
-  IUserDetailsReducerActionParam,
-} from "./interfaces/user-details-reducer.interface";
+import { IUserDetailsReducerState } from "./interfaces/user-details-reducer.interface";
+import { IUserDetailsAllActions } from "./interfaces/user-details-action.interface";
 
 import { UserDetailsActionsTypes } from "./enums/user-details-actions-types.enum";
 
@@ -23,7 +21,7 @@ const defaultUserDetailsReducer: IUserDetailsReducerState = {
 
 const userDetailsReducer = (
   state = defaultUserDetailsReducer,
-  action: IUserDetailsReducerActionParam,
+  action: IUserDetailsAllActions,
 ): IUserDetailsReducerState =>
   produce(
     state,

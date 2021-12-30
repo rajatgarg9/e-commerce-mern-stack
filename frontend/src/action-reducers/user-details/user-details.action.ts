@@ -53,13 +53,15 @@ export const fetchUserDetails =
 
       dispatch(userDetailsFetchStart());
 
+      const { accessToken, tokenType } = getState().auth;
+
       const res = await api.get<IUserDetailsApiResponse>("/users/@me", {
         cancelToken: new axios.CancelToken(function executor(apiCanceller) {
           // An executor function receives a cancel function as a parameter
           fetchUserDetailsApiCanceller = apiCanceller;
         }),
         headers: {
-          authorization: `Bearer <accessToken>`,
+          authorization: `${tokenType} ${accessToken}`,
         },
       });
 

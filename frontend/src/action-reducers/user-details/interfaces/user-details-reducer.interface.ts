@@ -1,20 +1,12 @@
 import { IApiError } from "@interfaces/api-error.interface";
 
-import {
-  IUserDetailsFetchStartActionResponse,
-  IUserDetailsFetchSuccessActionResponse,
-  IUserDetailsFetchFailActionResponse,
-} from "./user-details-action.interface";
-
-export interface IUserDetailsReducerState {
-  isLoading: boolean;
-  errors: IApiError;
+export interface IUserDetailsReducerMainData {
   id: string;
   email: string;
   name: string;
 }
 
-export type IUserDetailsReducerActionParam =
-  | IUserDetailsFetchStartActionResponse
-  | IUserDetailsFetchSuccessActionResponse
-  | IUserDetailsFetchFailActionResponse;
+export interface IUserDetailsReducerState extends IUserDetailsReducerMainData {
+  isLoading: boolean;
+  errors: IApiError;
+}

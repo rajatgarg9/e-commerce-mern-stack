@@ -17,3 +17,8 @@ export interface IUserDetailsFetchFailActionResponse {
   type: UserDetailsActionsTypes.USER_DETAILS_FETCH_FAIL;
   payload: IApiError;
 }
+
+export type IUserDetailsAllActions =
+  | IUserDetailsFetchStartActionResponse
+  | IUserDetailsFetchSuccessActionResponse
+  | IUserDetailsFetchFailActionResponse;

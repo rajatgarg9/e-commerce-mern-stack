@@ -23,7 +23,7 @@ function Home() {
 
   useEffect(() => {
     dispatch(userDetailsFetchFail(["dddd"]));
-    console.log("+++++++++++++");
+    // console.log("+++++++++++++");
   }, []);
   return (
     <div>

@@ -11,7 +11,7 @@ import { userDetailsFetchFail } from "@action-reducers/user-details/user-details
 import { IServerSideFunctionReturn } from "@interfaces/server-side-function.interface";
 
 import {
-  authAddCookieDetails,
+  authLoadCookieDetails,
   tokenRefresh,
 } from "@action-reducers/auth/auth.action";
 
@@ -52,7 +52,7 @@ Home.getInitialProps = async (
 
   if (authrization.accessToken) {
     if (authrization.expiresIn < Date.now()) {
-      store.dispatch(authAddCookieDetails(authrization));
+      store.dispatch(authLoadCookieDetails(authrization));
       await store.dispatch(tokenRefresh());
     }
   }

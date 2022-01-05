@@ -58,8 +58,8 @@ export interface IAuthTokenRefreshFailActionResponse {
   type: AuthActionTypes.AUTH_TOKEN_REFRESH_FAIL;
 }
 
-export interface IAuthAddCookieDetailsActionResponse {
-  type: AuthActionTypes.AUTH_ADD_COOKIE_DETAIL;
+export interface IAuthLoadCookieDetailsActionResponse {
+  type: AuthActionTypes.AUTH_LOAD_COOKIE_DETAIL;
   payload: IAuthReducerMainData;
 }
 
@@ -76,4 +76,4 @@ export type IAuthAllActions =
   | IAuthTokenRefreshStartActionResponse
   | IAuthTokenRefreshSuccessActionResponse
   | IAuthTokenRefreshFailActionResponse
-  | IAuthAddCookieDetailsActionResponse;
+  | IAuthLoadCookieDetailsActionResponse;

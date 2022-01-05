@@ -1,5 +1,10 @@
 import produce from "immer";
 
+import {
+  setClientAuthCookies,
+  setClientAuthRefreshCookies,
+  deleteClientAuthCookies,
+} from "@utilities/methods/auth-cookies";
 import { IAuthAllActions } from "./interfaces/auth-action.interface";
 import { IAuthReducerState } from "./interfaces/auth-reducer-state.interface";
 
@@ -18,7 +23,7 @@ const {
   AUTH_TOKEN_REFRESH_START,
   AUTH_TOKEN_REFRESH_SUCCESS,
   AUTH_TOKEN_REFRESH_FAIL,
-  AUTH_ADD_COOKIE_DETAIL,
+  AUTH_LOAD_COOKIE_DETAIL,
 } = AuthActionTypes;
 
 const defaultAuthReducer: IAuthReducerState = {
@@ -47,6 +52,8 @@ const authReducer = (
         return draft;
       }
       case AUTH_SIGNUP_SUCCESS: {
+        setClientAuthCookies(action?.payload);
+
         return {
           ...draft,
           isSignupInProgress: false,
@@ -68,6 +75,8 @@ const authReducer = (
         return draft;
       }
       case AUTH_LOGIN_SUCCESS: {
+        setClientAuthCookies(action?.payload);
+
         return {
           ...draft,
           isLoginInProgress: false,
@@ -89,6 +98,8 @@ const authReducer = (
         return draft;
       }
       case AUTH_LOGOUT_SUCCESS: {
+        deleteClientAuthCookies();
+
         return {
           ...draft,
           ...defaultAuthReducer,
@@ -108,6 +119,8 @@ const authReducer = (
         return draft;
       }
       case AUTH_TOKEN_REFRESH_SUCCESS: {
+        setClientAuthRefreshCookies(action?.payload);
+
         return {
           ...draft,
           isTokenRefreshInProgress: false,
@@ -116,13 +129,14 @@ const authReducer = (
       }
 
       case AUTH_TOKEN_REFRESH_FAIL: {
+        deleteClientAuthCookies();
         return {
           ...draft,
           ...defaultAuthReducer,
         };
       }
 
-      case AUTH_ADD_COOKIE_DETAIL: {
+      case AUTH_LOAD_COOKIE_DETAIL: {
         return {
           ...draft,
           ...action?.payload,

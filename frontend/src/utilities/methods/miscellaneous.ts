@@ -21,3 +21,7 @@ export function getApiErrorMessage(error: ITryCatchError): IApiError {
 
   return "Something went wrong.";
 }
+
+export function getDaysFromSeconds(milliseconds: number): number {
+  return milliseconds / (60 * 60 * 24);
+}

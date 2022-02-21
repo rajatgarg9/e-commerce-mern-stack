@@ -38,6 +38,7 @@ export default Home;
 Home.getInitialProps = async (
   ctx: NextPageContext,
 ): Promise<IServerSideFunctionReturn> => {
+  console.log("++++++++++++++++++++++++");
   if (isClient()) {
     return { hasServerFetchedData: false };
   }
@@ -48,11 +49,13 @@ Home.getInitialProps = async (
   const cookie = req?.headers.cookie;
 
   const cookieAuthorization = getCookie(CookieNames.AUTHORIZATION, cookie);
-  const authrization = JSON.parse(cookieAuthorization) as IAuthReducerMainData;
+  const authrization = (cookieAuthorization &&
+    JSON.parse(cookieAuthorization)) as IAuthReducerMainData;
 
-  if (authrization.accessToken) {
+  if (authrization?.accessToken) {
+    store.dispatch(authLoadCookieDetails(authrization));
+
     if (authrization.expiresIn < Date.now()) {
-      store.dispatch(authLoadCookieDetails(authrization));
       await store.dispatch(tokenRefresh());
     }
   }

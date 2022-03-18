@@ -4,6 +4,18 @@
   @include typo_heading_1;
 }
 
+.typo_heading_2 {
+  @include typo_heading_2;
+}
+
 .typo_body_1 {
   @include typo_body_1;
+}
+
+.typo_body_2 {
+  @include typo_body_2;
+}
+
+.typo_body_3 {
+  @include typo_body_3;
 }

@@ -4,11 +4,9 @@ import SignUpSection from "@components/authentication-page/sign-up-section/sign-
 
 import { IAuthennticationPagePropTypes } from "./authentication-page.interface";
 
-import style from "./authentication-page.module.scss";
-
-function AuthenticationPage({ className }: IAuthennticationPagePropTypes) {
+function AuthenticationPage({ className = "" }: IAuthennticationPagePropTypes) {
   return (
-    <div className={`${className || ""} ${style.test}`}>
+    <div className={className}>
       <SignUpSection />
     </div>
   );

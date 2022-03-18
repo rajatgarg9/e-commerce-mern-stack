@@ -1,0 +1,40 @@
+@import "@scss/_compoent_import.scss";
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  background-color: $color_5;
+  color: $color_4;
+  cursor: pointer;
+  min-width: 120px;
+
+  &:hover {
+    background-color: transparent;
+    color: $color_5;
+    border-color: $color_5;
+  }
+
+  &--dsbld {
+    pointer-events: none;
+    background-color: $color_6;
+  }
+
+  &--lodng {
+    position: relative;
+
+    .title {
+      color: transparent;
+    }
+  }
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

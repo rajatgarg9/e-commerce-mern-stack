@@ -1,0 +1,13 @@
+@import "@scss/_compoent_import.scss";
+
+.msg {
+  &--variation {
+    &-error {
+      color: $color_2;
+    }
+
+    &-success {
+      color: $color_3;
+    }
+  }
+}

@@ -1,12 +1,18 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { NextPageContext } from "next";
+
 import Link from "next/link";
+
+import requireAuth from "@src/hoc/requireAuth";
 
 import { initializeStore } from "@src/store";
 
 import { IAuthReducerMainData } from "@action-reducers/auth/interfaces/auth-reducer-state.interface";
-import { userDetailsFetchFail } from "@action-reducers/user-details/user-details.action";
+import {
+  userDetailsFetchFail,
+  fetchUserDetails,
+} from "@action-reducers/user-details/user-details.action";
 
 import { IServerSideFunctionReturn } from "@interfaces/server-side-function.interface";
 
@@ -33,12 +39,11 @@ function Home() {
   );
 }
 
-export default Home;
+export default requireAuth(Home);
 
 Home.getInitialProps = async (
   ctx: NextPageContext,
 ): Promise<IServerSideFunctionReturn> => {
-  console.log("++++++++++++++++++++++++");
   if (isClient()) {
     return { hasServerFetchedData: false };
   }
@@ -49,20 +54,22 @@ Home.getInitialProps = async (
   const cookie = req?.headers.cookie;
 
   const cookieAuthorization = getCookie(CookieNames.AUTHORIZATION, cookie);
-  const authrization = (cookieAuthorization &&
+  const authorization = (cookieAuthorization &&
     JSON.parse(cookieAuthorization)) as IAuthReducerMainData;
 
-  if (authrization?.accessToken) {
-    store.dispatch(authLoadCookieDetails(authrization));
+  if (authorization?.accessToken) {
+    store.dispatch(authLoadCookieDetails(authorization));
 
-    if (authrization.expiresIn < Date.now()) {
+    if (authorization.expiresIn < Date.now()) {
       await store.dispatch(tokenRefresh());
     }
   }
 
   const { accessToken } = store.getState().auth;
 
-  if (!accessToken) {
+  if (accessToken) {
+    await store.dispatch(fetchUserDetails());
+  } else {
     res?.setHeader("set-cookie", setCookie(CookieNames.AUTHORIZATION, "", -1));
   }
 

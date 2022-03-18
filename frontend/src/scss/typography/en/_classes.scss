@@ -1,0 +1,9 @@
+@import "./_mixin.scss";
+
+.typo_heading_1 {
+  @include typo_heading_1;
+}
+
+.typo_body_1 {
+  @include typo_body_1;
+}

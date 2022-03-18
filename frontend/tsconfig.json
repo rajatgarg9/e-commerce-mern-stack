@@ -21,7 +21,8 @@
       "@components/*": ["src/components/*"],
       "@utilities/*": ["src/utilities/*"],
       "@interfaces/*": ["src/interfaces/*"],
-      "@enums/*": ["src/enums/*"]
+      "@enums/*": ["src/enums/*"],
+      "@scss/*": ["src/scss/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

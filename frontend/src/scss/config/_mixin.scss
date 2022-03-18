@@ -1,0 +1,12 @@
+@mixin contentWrap {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 32px;
+  padding-right: 32px;
+
+  @include desktop {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

@@ -1,3 +1,5 @@
+import "@scss/index.scss";
+
 import { Provider } from "react-redux";
 
 import { useStore } from "src/store";

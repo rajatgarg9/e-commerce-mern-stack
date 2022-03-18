@@ -1,0 +1,25 @@
+@mixin typo_heading_1 {
+  font-family: $font_family;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.5;
+  font-style: normal;
+  letter-spacing: normal;
+
+  @include desktop {
+    font-size: 48px;
+  }
+}
+
+@mixin typo_body_1 {
+  font-family: $font_family;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+  font-style: normal;
+  letter-spacing: normal;
+
+  @include desktop {
+    font-size: 16px;
+  }
+}

@@ -15,8 +15,8 @@ export function axiosInstance(baseURL: string): AxiosInstance {
 }
 
 export function getApiErrorMessage(error: ITryCatchError): IApiError {
-  if (error?.response?.data?.message) {
-    return error.response.data.message;
+  if (error?.response?.data?.messages) {
+    return error.response.data.messages;
   }
 
   return "Something went wrong.";

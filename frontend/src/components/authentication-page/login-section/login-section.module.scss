@@ -1,0 +1,28 @@
+@import "@scss/_compoent_import.scss";
+
+.loginSec {
+  text-align: center;
+}
+
+.heading {
+  color: $color_1;
+}
+
+.inputWrap {
+  &:not(:first-child) {
+    margin-top: 10px;
+  }
+}
+
+.inputElement {
+  max-width: 300px;
+  width: 100%;
+}
+
+.btnWrap {
+  margin-top: 20px;
+}
+
+.errorMsg {
+  margin-top: 15px;
+}

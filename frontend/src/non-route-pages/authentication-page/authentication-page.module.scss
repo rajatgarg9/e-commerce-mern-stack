@@ -1,0 +1,36 @@
+@import "@scss/_compoent_import.scss";
+
+.content {
+  @include contentWrap;
+
+  min-height: 100vh;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.item {
+  &:not(:first-child) {
+    border-top: 1px dashed $color_1;
+    padding-top: 40px;
+    margin-top: 40px;
+  }
+}
+
+@include desktop {
+  .content {
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(2, 1fr);
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .item {
+    &:not(:first-child) {
+      padding-top: 0;
+      margin-top: 0;
+      border-top: none;
+      border-left: 1px dashed $color_1;
+    }
+  }
+}

@@ -1,8 +1,9 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import { NextPageContext } from "next";
 
 import Link from "next/link";
+import Header from "@components/common/header/header";
 
 import requireAuth from "@src/hoc/requireAuth";
 
@@ -10,7 +11,7 @@ import { initializeStore } from "@src/store";
 
 import { IAuthReducerMainData } from "@action-reducers/auth/interfaces/auth-reducer-state.interface";
 import {
-  userDetailsFetchFail,
+  // userDetailsFetchFail,
   fetchUserDetails,
 } from "@action-reducers/user-details/user-details.action";
 
@@ -25,14 +26,15 @@ import { isClient } from "@utilities/methods/miscellaneous";
 import { getCookie, setCookie, CookieNames } from "@utilities/methods/cookies";
 
 function Home() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(userDetailsFetchFail(["dddd"]));
+    // dispatch(fetchUserDetails());
     // console.log("+++++++++++++");
   }, []);
   return (
     <div>
+      <Header />
       gjhkl
       <Link href="/test">ss</Link>
     </div>

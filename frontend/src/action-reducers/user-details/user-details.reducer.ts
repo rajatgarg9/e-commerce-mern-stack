@@ -33,8 +33,6 @@ const userDetailsReducer = (
           return draft;
         }
         case USER_DETAILS_FETCH_SUCCESS: {
-          draft.isLoading = false;
-          draft.errors = [];
           return {
             ...draft,
             isLoading: false,

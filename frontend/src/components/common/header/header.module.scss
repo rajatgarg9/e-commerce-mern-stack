@@ -1,0 +1,55 @@
+@import "@scss/_compoent_import.scss";
+
+.header {
+  background-color: $color_7;
+  color: $color_4;
+}
+
+.contentWrap {
+  @include contentWrap;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 60px;
+}
+
+.rightInfoSec {
+  display: flex;
+  align-items: center;
+}
+
+.userInfoSec {
+  display: flex;
+}
+
+.avatar {
+  display: inline-block;
+  background-color: $color_6;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.nameNEmailWrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 10px;
+}
+
+.logoutBtn {
+  cursor: pointer;
+  margin-left: 20px;
+}
+
+@include desktop {
+  .header {
+    background-color: $color_7;
+  }
+
+  .contentWrap {
+    min-height: 80px;
+  }
+}

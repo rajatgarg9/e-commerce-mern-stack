@@ -5,7 +5,7 @@ import { getApiErrorMessage } from "@utilities/methods/miscellaneous";
 import { IThunkFunction } from "@interfaces/thunk-function.interface";
 import { ITryCatchError } from "@interfaces/try-catch-error.interface";
 
-import { AuthActionTypes } from "./enums/auth-action-types.enum";
+import { AuthActions } from "./enums/auth-actions.enum";
 
 import {
   ISignupApiBody,
@@ -49,7 +49,7 @@ const {
   AUTH_TOKEN_REFRESH_SUCCESS,
   AUTH_TOKEN_REFRESH_FAIL,
   AUTH_LOAD_COOKIE_DETAIL,
-} = AuthActionTypes;
+} = AuthActions;
 
 export function authSignupStart(): IAuthSignupStartActionResponse {
   return {

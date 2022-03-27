@@ -5,7 +5,10 @@ import TextInput from "@components/common/text-input/text-input";
 import Button from "@components/common/button/button";
 import Message from "@components/common/message/message";
 
-import { InputTagTypes } from "@components/common/text-input/text-input.enum";
+import {
+  InputTagTypes,
+  AutoCompleteValues,
+} from "@components/common/text-input/text-input.enum";
 
 import { signup } from "@action-reducers/auth/auth.action";
 
@@ -41,44 +44,48 @@ function SignUpSection({ className = "" }: ISignUpPropTypes): JSX.Element {
   return (
     <div className={`${styles.signupSec} ${className}`}>
       <h2 className={`${styles.heading} typo_heading_2`}>Sign Up</h2>
-      <div className={styles.inputWrap}>
-        <TextInput
-          className={styles.inputElement}
-          id="signupSec__name"
-          value={name}
-          label="name"
-          onChange={(value) => setName(value)}
-        />
-      </div>
-      <div className={styles.inputWrap}>
-        <TextInput
-          className={styles.inputElement}
-          id="signupSec__email"
-          value={email}
-          label="email"
-          onChange={(value) => setEmail(value)}
-          type={InputTagTypes.EMAIL}
-        />
-      </div>
-      <div className={styles.inputWrap}>
-        <TextInput
-          className={styles.inputElement}
-          id="signupSec__paswrd"
-          value={password}
-          label="password"
-          onChange={(value) => setPassword(value)}
-          type={InputTagTypes.PASSWORD}
-        />
-      </div>
+      <form autoComplete="on">
+        <div className={styles.inputWrap}>
+          <TextInput
+            className={styles.inputElement}
+            id="signupSec__name"
+            value={name}
+            label="name"
+            onChange={(value) => setName(value)}
+          />
+        </div>
+        <div className={styles.inputWrap}>
+          <TextInput
+            className={styles.inputElement}
+            id="signupSec__email"
+            value={email}
+            label="email"
+            onChange={(value) => setEmail(value)}
+            type={InputTagTypes.EMAIL}
+          />
+        </div>
+        <div className={styles.inputWrap}>
+          <TextInput
+            className={styles.inputElement}
+            id="signupSec__paswrd"
+            value={password}
+            label="password"
+            onChange={(value) => setPassword(value)}
+            type={InputTagTypes.PASSWORD}
+            autoComplete={AutoCompleteValues.OFF}
+          />
+        </div>
 
-      <div className={styles.btnWrap}>
-        <Button
-          title="Sign Up"
-          isLoading={isSignupInProgress}
-          onClick={handleSignUpButton}
-          isDisabled={!name || !email || !password}
-        />
-      </div>
+        <div className={styles.btnWrap}>
+          <Button
+            title="Sign Up"
+            isLoading={isSignupInProgress}
+            onClick={handleSignUpButton}
+            isDisabled={!name || !email || !password}
+          />
+        </div>
+      </form>
+
       {hasError && (
         <Message message={signupErrors} className={styles.errorMsg} />
       )}

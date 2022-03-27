@@ -1,4 +1,4 @@
-import { InputTagTypes } from "./text-input.enum";
+import { InputTagTypes, AutoCompleteValues } from "./text-input.enum";
 
 export interface ITextInputPropTypes {
   className?: string;
@@ -7,4 +7,5 @@ export interface ITextInputPropTypes {
   id: string;
   type?: InputTagTypes;
   onChange: (value: string) => void;
+  autoComplete?: AutoCompleteValues;
 }

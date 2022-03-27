@@ -5,7 +5,10 @@ import TextInput from "@components/common/text-input/text-input";
 import Button from "@components/common/button/button";
 import Message from "@components/common/message/message";
 
-import { InputTagTypes } from "@components/common/text-input/text-input.enum";
+import {
+  InputTagTypes,
+  AutoCompleteValues,
+} from "@components/common/text-input/text-input.enum";
 
 import { login } from "@action-reducers/auth/auth.action";
 
@@ -39,35 +42,39 @@ function LoginSection({ className = "" }: ILoginPropTypes): JSX.Element {
   return (
     <div className={`${styles.loginSec} ${className}`}>
       <h2 className={`${styles.heading} typo_heading_2`}>Login</h2>
-      <div className={styles.inputWrap}>
-        <TextInput
-          className={styles.inputElement}
-          id="loginSec__email"
-          value={email}
-          label="email"
-          onChange={(value) => setEmail(value)}
-          type={InputTagTypes.EMAIL}
-        />
-      </div>
-      <div className={styles.inputWrap}>
-        <TextInput
-          className={styles.inputElement}
-          id="loginSec__paswrd"
-          value={password}
-          label="password"
-          onChange={(value) => setPassword(value)}
-          type={InputTagTypes.PASSWORD}
-        />
-      </div>
+      <form autoComplete="on">
+        <div className={styles.inputWrap}>
+          <TextInput
+            className={styles.inputElement}
+            id="loginSec__email"
+            value={email}
+            label="email"
+            onChange={(value) => setEmail(value)}
+            type={InputTagTypes.EMAIL}
+          />
+        </div>
+        <div className={styles.inputWrap}>
+          <TextInput
+            className={styles.inputElement}
+            id="loginSec__paswrd"
+            value={password}
+            label="password"
+            onChange={(value) => setPassword(value)}
+            type={InputTagTypes.PASSWORD}
+            autoComplete={AutoCompleteValues.OFF}
+          />
+        </div>
 
-      <div className={styles.btnWrap}>
-        <Button
-          title="Login"
-          isLoading={isLoginInProgress}
-          onClick={handleLoginButton}
-          isDisabled={!email || !password}
-        />
-      </div>
+        <div className={styles.btnWrap}>
+          <Button
+            title="Login"
+            isLoading={isLoginInProgress}
+            onClick={handleLoginButton}
+            isDisabled={!email || !password}
+          />
+        </div>
+      </form>
+
       {hasError && (
         <Message message={loginErrors} className={styles.errorMsg} />
       )}

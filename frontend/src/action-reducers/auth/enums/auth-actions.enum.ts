@@ -1,4 +1,4 @@
-export enum AuthActionTypes {
+export enum AuthActions {
   AUTH_SIGNUP_START = "AUTH_SIGNUP_START",
   AUTH_SIGNUP_SUCCESS = "AUTH_SIGNUP_SUCCESS",
   AUTH_SIGNUP_FAIL = "AUTH_SIGNUP_FAIL",

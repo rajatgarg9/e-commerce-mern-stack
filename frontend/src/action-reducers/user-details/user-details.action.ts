@@ -3,7 +3,7 @@ import axios, { Canceler } from "axios";
 import { getApiErrorMessage } from "@utilities/methods/miscellaneous";
 import { IThunkFunction } from "@interfaces/thunk-function.interface";
 import { ITryCatchError } from "@interfaces/try-catch-error.interface";
-import { UserDetailsActionsTypes } from "./enums/user-details-actions-types.enum";
+import { UserDetailsActions } from "./enums/user-details-actions.enum";
 
 import {
   IUserDetailsFetchStartActionResponse,
@@ -17,7 +17,7 @@ const {
   USER_DETAILS_FETCH_START,
   USER_DETAILS_FETCH_SUCCESS,
   USER_DETAILS_FETCH_FAIL,
-} = UserDetailsActionsTypes;
+} = UserDetailsActions;
 
 export function userDetailsFetchStart(): IUserDetailsFetchStartActionResponse {
   return {

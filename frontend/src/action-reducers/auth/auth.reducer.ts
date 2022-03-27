@@ -8,7 +8,7 @@ import {
 import { IAuthAllActions } from "./interfaces/auth-action.interface";
 import { IAuthReducerState } from "./interfaces/auth-reducer-state.interface";
 
-import { AuthActionTypes } from "./enums/auth-action-types.enum";
+import { AuthActions } from "./enums/auth-actions.enum";
 
 const {
   AUTH_SIGNUP_START,
@@ -24,7 +24,7 @@ const {
   AUTH_TOKEN_REFRESH_SUCCESS,
   AUTH_TOKEN_REFRESH_FAIL,
   AUTH_LOAD_COOKIE_DETAIL,
-} = AuthActionTypes;
+} = AuthActions;
 
 const defaultAuthReducer: IAuthReducerState = {
   isSignupInProgress: false,

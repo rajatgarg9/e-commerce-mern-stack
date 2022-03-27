@@ -3,13 +3,13 @@ import produce from "immer";
 import { IUserDetailsReducerState } from "./interfaces/user-details-reducer.interface";
 import { IUserDetailsAllActions } from "./interfaces/user-details-action.interface";
 
-import { UserDetailsActionsTypes } from "./enums/user-details-actions-types.enum";
+import { UserDetailsActions } from "./enums/user-details-actions.enum";
 
 const {
   USER_DETAILS_FETCH_START,
   USER_DETAILS_FETCH_SUCCESS,
   USER_DETAILS_FETCH_FAIL,
-} = UserDetailsActionsTypes;
+} = UserDetailsActions;
 
 const defaultUserDetailsReducer: IUserDetailsReducerState = {
   isLoading: true,

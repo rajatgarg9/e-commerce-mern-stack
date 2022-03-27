@@ -3,3 +3,8 @@ export enum InputTagTypes {
   EMAIL = "email",
   PASSWORD = "password",
 }
+
+export enum AutoCompleteValues {
+  ON = "on",
+  OFF = "off",
+}

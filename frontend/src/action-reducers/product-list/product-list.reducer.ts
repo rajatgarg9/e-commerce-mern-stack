@@ -15,7 +15,7 @@ const {
 const defaultProductListReducer: IProductListReducerState = {
   isLoading: true,
   errors: [],
-  productList: [],
+  products: [],
   pagination: {
     limit: 0,
     lastPage: 0,

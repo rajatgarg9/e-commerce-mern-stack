@@ -199,7 +199,7 @@
 }
 ```
 
-## `6. /api/v1/public/products`
+## `6. /api/v1/products`
 
 **Request:**  
 &nbsp;&nbsp;**Method:** `GET`

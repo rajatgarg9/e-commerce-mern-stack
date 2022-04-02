@@ -9,6 +9,9 @@ const {
   PRODUCT_LIST_FETCH_START,
   PRODUCT_LIST_FETCH_SUCCESS,
   PRODUCT_LIST_FETCH_FAIL,
+  PRODUCT_LIST_LOAD_MORE_START,
+  PRODUCT_LIST_LOAD_MORE_SUCCESS,
+  PRODUCT_LIST_LOAD_MORE_FAIL,
   PRODUCT_LIST_RESET,
 } = ProductListActions;
 
@@ -16,6 +19,8 @@ const defaultProductListReducer: IProductListReducerState = {
   isLoading: true,
   errors: [],
   products: [],
+  isLoadingMoreInProgress: false,
+  loadMoreError: [],
   pagination: {
     limit: 0,
     lastPage: 0,
@@ -49,6 +54,26 @@ const productListReducer = (
         case PRODUCT_LIST_FETCH_FAIL: {
           draft.isLoading = false;
           draft.errors = action?.payload;
+
+          return draft;
+        }
+
+        case PRODUCT_LIST_LOAD_MORE_START: {
+          draft.isLoadingMoreInProgress = true;
+          return draft;
+        }
+        case PRODUCT_LIST_LOAD_MORE_SUCCESS: {
+          return {
+            ...draft,
+            isLoadingMoreInProgress: false,
+            loadMoreError: [],
+            ...action?.payload,
+          };
+        }
+
+        case PRODUCT_LIST_LOAD_MORE_FAIL: {
+          draft.isLoadingMoreInProgress = false;
+          draft.loadMoreError = action?.payload;
 
           return draft;
         }

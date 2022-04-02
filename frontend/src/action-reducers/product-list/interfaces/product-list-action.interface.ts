@@ -16,6 +16,20 @@ export interface IProductListFetchFail {
   payload: IApiError;
 }
 
+export interface IProductListLoadMoreStart {
+  type: ProductListActions.PRODUCT_LIST_LOAD_MORE_START;
+}
+
+export interface IProductListLoadMoreSuccess {
+  type: ProductListActions.PRODUCT_LIST_LOAD_MORE_SUCCESS;
+  payload: IProductListAPIResponse;
+}
+
+export interface IProductListLoadMoreFail {
+  type: ProductListActions.PRODUCT_LIST_LOAD_MORE_FAIL;
+  payload: IApiError;
+}
+
 export interface IProductListReset {
   type: ProductListActions.PRODUCT_LIST_RESET;
 }
@@ -24,4 +38,7 @@ export type IProductListAllActions =
   | IProductListFetchStart
   | IProductListFetchSuccess
   | IProductListFetchFail
-  | IProductListReset;
+  | IProductListReset
+  | IProductListLoadMoreStart
+  | IProductListLoadMoreSuccess
+  | IProductListLoadMoreFail;

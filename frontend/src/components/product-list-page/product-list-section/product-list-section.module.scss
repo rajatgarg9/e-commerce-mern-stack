@@ -37,6 +37,28 @@
   }
 }
 
+.loadMoreBtnWrap {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.loadMoreBtn {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: $color_5;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.loadMoreLodngNErrCmptWrap {
+  margin-top: 30px;
+  text-align: center;
+}
+
 @include desktop {
   .productItm {
     padding: 0 5px;

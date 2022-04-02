@@ -1,0 +1,35 @@
+@import "@scss/_compoent_import.scss";
+
+.snglPodctCrd {
+  border: 1px solid $color_1;
+  border-radius: 8px;
+}
+
+.podctImgWrap {
+  background-color: rgba($color_6, 0.4);
+  height: 100px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.podctImg {
+  height: 100%;
+}
+
+.bottomCntnt {
+  padding: 10px;
+  text-align: center;
+}
+
+.productName {
+  text-transform: capitalize;
+}
+
+.price {
+  margin-top: 5px;
+}
+
+.viewBtnWrap {
+  margin-top: 5px;
+}

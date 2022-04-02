@@ -1,42 +1,30 @@
-import { useEffect } from "react";
-// import { useDispatch } from "react-redux";
 import { NextPageContext } from "next";
 
-import Link from "next/link";
 import Header from "@components/common/header/header";
+import ProductListSection from "@components/product-list-page/product-list-section/product-list-section";
 
 import requireAuth from "@src/hoc/requireAuth";
 
 import { initializeStore } from "@src/store";
 
 import { IAuthReducerMainData } from "@action-reducers/auth/interfaces/auth-reducer-state.interface";
-import {
-  // userDetailsFetchFail,
-  fetchUserDetails,
-} from "@action-reducers/user-details/user-details.action";
-
-import { IServerSideFunctionReturn } from "@interfaces/server-side-function.interface";
-
+import { fetchUserDetails } from "@action-reducers/user-details/user-details.action";
+import { fetchProductList } from "@action-reducers/product-list/product-list.action";
 import {
   authLoadCookieDetails,
   tokenRefresh,
 } from "@action-reducers/auth/auth.action";
 
+import { IServerSideFunctionReturn } from "@interfaces/server-side-function.interface";
+
 import { isClient } from "@utilities/methods/miscellaneous";
 import { getCookie, setCookie, CookieNames } from "@utilities/methods/cookies";
 
 function Home() {
-  // const dispatch = useDispatch();
-
-  useEffect(() => {
-    // dispatch(fetchUserDetails());
-    // console.log("+++++++++++++");
-  }, []);
   return (
     <div>
       <Header />
-      gjhkl
-      <Link href="/test">ss</Link>
+      <ProductListSection />
     </div>
   );
 }
@@ -71,6 +59,7 @@ Home.getInitialProps = async (
 
   if (accessToken) {
     await store.dispatch(fetchUserDetails());
+    await store.dispatch(fetchProductList());
   } else {
     res?.setHeader("set-cookie", setCookie(CookieNames.AUTHORIZATION, "", -1));
   }

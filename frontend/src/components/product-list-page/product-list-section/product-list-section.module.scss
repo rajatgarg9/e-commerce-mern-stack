@@ -14,26 +14,17 @@
   margin-top: 100px;
 }
 
-.productItm {
-  display: inline-block;
-  width: 50%;
-
-  &:nth-child(n + 3) {
-    margin-top: 20px;
-  }
+.productList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(166px, 1fr));
+  column-gap: 10px;
+  row-gap: 20px;
 }
 
 @include tablet {
-  .productItm {
-    width: 33.33%;
-
-    &:nth-child(n + 3) {
-      margin-top: 0;
-    }
-
-    &:nth-child(n + 4) {
-      margin-top: 20px;
-    }
+  .productList {
+    column-gap: 20px;
+    row-gap: 20px;
   }
 }
 
@@ -57,19 +48,4 @@
 .loadMoreLodngNErrCmptWrap {
   margin-top: 30px;
   text-align: center;
-}
-
-@include desktop {
-  .productItm {
-    padding: 0 5px;
-    width: 20%;
-
-    &:nth-child(n + 4) {
-      margin-top: 0;
-    }
-
-    &:nth-child(n + 6) {
-      margin-top: 20px;
-    }
-  }
 }

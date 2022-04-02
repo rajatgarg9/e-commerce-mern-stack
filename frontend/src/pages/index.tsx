@@ -20,11 +20,13 @@ import { IServerSideFunctionReturn } from "@interfaces/server-side-function.inte
 import { isClient } from "@utilities/methods/miscellaneous";
 import { getCookie, setCookie, CookieNames } from "@utilities/methods/cookies";
 
+import styles from "./index.module.scss";
+
 function Home() {
   return (
     <div>
       <Header />
-      <ProductListSection />
+      <ProductListSection className={styles.productListSec} />
     </div>
   );
 }

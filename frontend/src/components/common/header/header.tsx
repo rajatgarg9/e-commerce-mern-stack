@@ -1,6 +1,8 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
+import Link from "@components/common/link/link";
+
 import { logout } from "@action-reducers/auth/auth.action";
 import { IRootReducerState } from "@action-reducers/root.reducer";
 import { IHeaderPropTypes } from "./header.interface";
@@ -18,7 +20,9 @@ function Header({ className = "" }: IHeaderPropTypes) {
   return (
     <header className={`${styles.header} ${className}`}>
       <div className={styles.contentWrap}>
-        <span className={`${styles.logo} typo_heading_1`}>Buy</span>
+        <span className={`${styles.logo} typo_heading_1`}>
+          <Link href="/">Buy</Link>
+        </span>
 
         <div className={styles.rightInfoSec}>
           <div className={styles.userInfoSec}>

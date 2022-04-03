@@ -55,7 +55,8 @@ export function singleProductReset(): ISingleProductReset {
 let fetchSingleProductApiCanceller: Canceler;
 
 export const fetchSingleProduct =
-  (): IThunkFunction => async (dispatch, getState, api) => {
+  (productId: string): IThunkFunction =>
+  async (dispatch, getState, api) => {
     try {
       if (fetchSingleProductApiCanceller) {
         fetchSingleProductApiCanceller("Operation canceled by the user.");
@@ -63,12 +64,15 @@ export const fetchSingleProduct =
 
       dispatch(singleProductFetchStart());
 
-      const res = await api.get<ISingleProductAPIResponse>("/products", {
-        cancelToken: new axios.CancelToken(function executor(apiCanceller) {
-          // An executor function receives a cancel function as a parameter
-          fetchSingleProductApiCanceller = apiCanceller;
-        }),
-      });
+      const res = await api.get<ISingleProductAPIResponse>(
+        `/products/${productId}`,
+        {
+          cancelToken: new axios.CancelToken(function executor(apiCanceller) {
+            // An executor function receives a cancel function as a parameter
+            fetchSingleProductApiCanceller = apiCanceller;
+          }),
+        },
+      );
 
       dispatch(singleProductFetchSuccess(res.data));
     } catch (error: unknown) {

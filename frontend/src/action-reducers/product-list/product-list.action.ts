@@ -82,13 +82,13 @@ export function productListReset(): IProductListReset {
   };
 }
 
-let fetchProductListCanceller: Canceler;
+let fetchProductListApiCanceller: Canceler;
 
 export const fetchProductList =
   (): IThunkFunction => async (dispatch, getState, api) => {
     try {
-      if (fetchProductListCanceller) {
-        fetchProductListCanceller("Operation canceled by the user.");
+      if (fetchProductListApiCanceller) {
+        fetchProductListApiCanceller("Operation canceled by the user.");
       }
 
       dispatch(productListFetchStart());
@@ -96,7 +96,7 @@ export const fetchProductList =
       const res = await api.get<IProductListAPIResponse>("/products", {
         cancelToken: new axios.CancelToken(function executor(apiCanceller) {
           // An executor function receives a cancel function as a parameter
-          fetchProductListCanceller = apiCanceller;
+          fetchProductListApiCanceller = apiCanceller;
         }),
       });
 
@@ -110,13 +110,13 @@ export const fetchProductList =
     }
   };
 
-let loadMoreProductListCanceller: Canceler;
+let loadMoreProductListApiCanceller: Canceler;
 
 export const loadMoreProductList =
   (): IThunkFunction => async (dispatch, getState, api) => {
     try {
-      if (loadMoreProductListCanceller) {
-        loadMoreProductListCanceller("Operation canceled by the user.");
+      if (loadMoreProductListApiCanceller) {
+        loadMoreProductListApiCanceller("Operation canceled by the user.");
       }
 
       dispatch(productListLoadMoreStart());
@@ -127,7 +127,7 @@ export const loadMoreProductList =
       const res = await api.get<IProductListAPIResponse>("/products", {
         cancelToken: new axios.CancelToken(function executor(apiCanceller) {
           // An executor function receives a cancel function as a parameter
-          loadMoreProductListCanceller = apiCanceller;
+          loadMoreProductListApiCanceller = apiCanceller;
         }),
         params: {
           page: currentPage + 1,

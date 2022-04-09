@@ -12,7 +12,7 @@ const {
 } = UserDetailsActions;
 
 const defaultUserDetailsReducer: IUserDetailsReducerState = {
-  isLoading: true,
+  isLoading: false,
   errors: [],
   id: "",
   name: "",

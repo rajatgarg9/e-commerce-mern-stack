@@ -21,7 +21,7 @@ function requireAuth<PropTypes>(WrappedComponent: any) {
     );
 
     if (isTokenRefreshInProgress) {
-      return <PageLoader />;
+      return <PageLoader {...props} />;
     }
 
     if (!accessToken) {

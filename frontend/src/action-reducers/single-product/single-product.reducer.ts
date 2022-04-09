@@ -13,7 +13,7 @@ const {
 } = SingleProductActions;
 
 const defaultSingleProductReducer: ISingleProductReducerState = {
-  isLoading: true,
+  isLoading: false,
   errors: [],
 };
 

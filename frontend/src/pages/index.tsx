@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { NextPageContext } from "next";
+import { useDispatch } from "react-redux";
 
 import Header from "@components/common/header/header";
 import ProductListSection from "@components/product-list-page/product-list-section/product-list-section";
@@ -9,7 +11,10 @@ import { initializeStore } from "@src/store";
 
 import { IAuthReducerMainData } from "@action-reducers/auth/interfaces/auth-reducer-state.interface";
 import { fetchUserDetails } from "@action-reducers/user-details/user-details.action";
-import { fetchProductList } from "@action-reducers/product-list/product-list.action";
+import {
+  fetchProductList,
+  productListReset,
+} from "@action-reducers/product-list/product-list.action";
 import {
   authLoadCookieDetails,
   tokenRefresh,
@@ -22,7 +27,20 @@ import { getCookie, setCookie, CookieNames } from "@utilities/methods/cookies";
 
 import styles from "./index.module.scss";
 
-function Home() {
+function Home({ hasServerFetchedData }: any) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!hasServerFetchedData) {
+      dispatch(fetchProductList());
+    }
+
+    return () => {
+      dispatch(productListReset());
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div>
       <Header />

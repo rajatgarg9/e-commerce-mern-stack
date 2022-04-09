@@ -16,7 +16,7 @@ const {
 } = ProductListActions;
 
 const defaultProductListReducer: IProductListReducerState = {
-  isLoading: true,
+  isLoading: false,
   errors: [],
   products: [],
   isLoadingMoreInProgress: false,

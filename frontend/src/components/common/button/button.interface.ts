@@ -12,16 +12,16 @@ export interface IButtonCommonPropTypes {
 }
 
 export interface ITagButtonPropTypes extends IButtonCommonPropTypes {
-  type: ButtonTagTypes.Button;
+  type?: ButtonTagTypes.Button;
   onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  href: never;
+  href?: never;
 }
 
 export interface ITagLinkPropTypes
-  extends Omit<ILinkPropTypes, "className">,
+  extends Omit<ILinkPropTypes, "className" | "title">,
     IButtonCommonPropTypes {
   type: ButtonTagTypes.LINK;
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
-export type IButtonPropTypes = ITagButtonPropTypes | ITagLinkPropTypes;
+export type IButtonPropTypes = ITagLinkPropTypes | ITagButtonPropTypes;

@@ -4,7 +4,7 @@ const ESLintPlugin = require("eslint-webpack-plugin");
 const StylelintPlugin = require("stylelint-webpack-plugin");
 
 module.exports = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   webpack: (config, options) => {
     config.plugins.push(
       new ESLintPlugin({

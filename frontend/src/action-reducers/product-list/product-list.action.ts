@@ -1,9 +1,6 @@
-import axios, { Canceler } from "axios";
-
-import { getApiErrorMessage } from "@utilities/methods/miscellaneous";
+import { apiHandler } from "@src/utilities/api-handler";
 
 import { IThunkFunction } from "@interfaces/thunk-function.interface";
-import { ITryCatchError } from "@interfaces/try-catch-error.interface";
 import {
   IProductListFetchStart,
   IProductListFetchSuccess,
@@ -13,11 +10,10 @@ import {
   IProductListLoadMoreFail,
   IProductListReset,
 } from "@action-reducers/product-list/interfaces/product-list-action.interface";
-
+import { IApiHandlerConfig } from "@interfaces/api-handler.interface";
 import { IProductListAPIResponse } from "@action-reducers/product-list/interfaces/product-list-api-response.interface";
 
-import { apiHandler } from "@src/utilities/api-handler";
-
+import { ApiMethodTypes } from "@enums/api-handler.enum";
 import { ProductListActions } from "./enums/product-list-actions.enum";
 
 const {
@@ -84,68 +80,40 @@ export function productListReset(): IProductListReset {
   };
 }
 
-let fetchProductListApiCanceller: Canceler;
-
 export const fetchProductList =
-  (): IThunkFunction => async (dispatch, getState, api) => {
-    try {
-      if (fetchProductListApiCanceller) {
-        fetchProductListApiCanceller("Operation canceled by the user.");
-      }
-
-      dispatch(productListFetchStart());
-
-      const res = await api.get<IProductListAPIResponse>("/products", {
-        cancelToken: new axios.CancelToken(function executor(apiCanceller) {
-          // An executor function receives a cancel function as a parameter
-          fetchProductListApiCanceller = apiCanceller;
-        }),
-      });
-
-      dispatch(productListFetchSuccess(res.data));
-    } catch (error: unknown) {
-      if (!axios.isCancel(error)) {
-        dispatch(
-          productListFetchFail(getApiErrorMessage(error as ITryCatchError)),
-        );
-      }
-    }
+  (): IThunkFunction => async (dispatch, getState) => {
+    const config: IApiHandlerConfig<IProductListAPIResponse> = {
+      method: ApiMethodTypes.GET,
+      endpoint: "/products",
+      onStartCb: () => dispatch(productListFetchStart()),
+      onSuccessCb: (data) => dispatch(productListFetchSuccess(data)),
+      onFailCb: (data) => dispatch(productListFetchFail(data)),
+    };
+    await apiHandler<IProductListAPIResponse>(config, dispatch, getState);
   };
 
-let loadMoreProductListApiCanceller: Canceler;
-
 export const loadMoreProductList =
-  (): IThunkFunction => async (dispatch, getState, api) => {
-    try {
-      if (loadMoreProductListApiCanceller) {
-        loadMoreProductListApiCanceller("Operation canceled by the user.");
-      }
+  (): IThunkFunction => async (dispatch, getState) => {
+    const { products, pagination: { currentPage = 0 } = {} } =
+      getState().productList;
 
-      dispatch(productListLoadMoreStart());
-
-      const { products, pagination: { currentPage = 0 } = {} } =
-        getState().productList;
-
-      const res = await api.get<IProductListAPIResponse>("/products", {
-        cancelToken: new axios.CancelToken(function executor(apiCanceller) {
-          // An executor function receives a cancel function as a parameter
-          loadMoreProductListApiCanceller = apiCanceller;
+    function onSuccessCb(data: IProductListAPIResponse) {
+      dispatch(
+        productListLoadMoreSuccess({
+          ...data,
+          products: [...products, ...data.products],
         }),
-        params: {
-          page: currentPage + 1,
-        },
-      });
-      const newData: IProductListAPIResponse = {
-        ...res.data,
-        products: [...products, ...res.data.products],
-      };
-
-      dispatch(productListLoadMoreSuccess(newData));
-    } catch (error: unknown) {
-      if (!axios.isCancel(error)) {
-        dispatch(
-          productListLoadMoreFail(getApiErrorMessage(error as ITryCatchError)),
-        );
-      }
+      );
     }
+    const config: IApiHandlerConfig<IProductListAPIResponse> = {
+      method: ApiMethodTypes.GET,
+      endpoint: "/products",
+      onStartCb: () => dispatch(productListLoadMoreStart()),
+      onSuccessCb,
+      onFailCb: (data) => dispatch(productListLoadMoreFail(data)),
+      params: {
+        page: currentPage + 1,
+      },
+    };
+    await apiHandler<IProductListAPIResponse>(config, dispatch, getState);
   };

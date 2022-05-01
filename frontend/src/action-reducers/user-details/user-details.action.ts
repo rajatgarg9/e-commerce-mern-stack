@@ -1,17 +1,16 @@
-import axios, { Canceler } from "axios";
+import { apiHandler } from "@src/utilities/api-handler";
 
-import { getApiErrorMessage } from "@utilities/methods/miscellaneous";
+import { IApiHandlerConfig } from "@interfaces/api-handler.interface";
 import { IThunkFunction } from "@interfaces/thunk-function.interface";
-import { ITryCatchError } from "@interfaces/try-catch-error.interface";
-import { UserDetailsActions } from "./enums/user-details-actions.enum";
-
+import { ApiMethodTypes } from "@enums/api-handler.enum";
 import {
   IUserDetailsFetchStartActionResponse,
   IUserDetailsFetchSuccessActionResponse,
   IUserDetailsFetchFailActionResponse,
 } from "./interfaces/user-details-action.interface";
-
 import { IUserDetailsApiResponse } from "./interfaces/user-details-api-response.interface";
+
+import { UserDetailsActions } from "./enums/user-details-actions.enum";
 
 const {
   USER_DETAILS_FETCH_START,
@@ -42,35 +41,14 @@ export function userDetailsFetchFail(
   };
 }
 
-let fetchUserDetailsApiCanceller: Canceler;
-
 export const fetchUserDetails =
-  (): IThunkFunction => async (dispatch, getState, api) => {
-    try {
-      if (fetchUserDetailsApiCanceller) {
-        fetchUserDetailsApiCanceller("Operation canceled by the user.");
-      }
-
-      dispatch(userDetailsFetchStart());
-
-      const { accessToken, tokenType } = getState().auth;
-
-      const res = await api.get<IUserDetailsApiResponse>("/users/@me", {
-        cancelToken: new axios.CancelToken(function executor(apiCanceller) {
-          // An executor function receives a cancel function as a parameter
-          fetchUserDetailsApiCanceller = apiCanceller;
-        }),
-        headers: {
-          authorization: `${tokenType} ${accessToken}`,
-        },
-      });
-
-      dispatch(userDetailsFetchSuccess(res.data));
-    } catch (error: unknown) {
-      if (!axios.isCancel(error)) {
-        dispatch(
-          userDetailsFetchFail(getApiErrorMessage(error as ITryCatchError)),
-        );
-      }
-    }
+  (): IThunkFunction => async (dispatch, getState) => {
+    const config: IApiHandlerConfig<IUserDetailsApiResponse> = {
+      method: ApiMethodTypes.GET,
+      endpoint: `/users/@me`,
+      onStartCb: () => dispatch(userDetailsFetchStart()),
+      onSuccessCb: (data) => dispatch(userDetailsFetchSuccess(data)),
+      onFailCb: (data) => dispatch(userDetailsFetchFail(data)),
+    };
+    await apiHandler<IUserDetailsApiResponse>(config, dispatch, getState);
   };

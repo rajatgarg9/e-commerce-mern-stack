@@ -25,7 +25,7 @@ export function getApiErrorMessage(error: ITryCatchError): IApiError {
 }
 
 export function getApiErrorStatus(error: ITryCatchError): ApiErrorCodes {
-  return error.response.status;
+  return error?.response?.status;
 }
 
 export function getDaysFromSeconds(milliseconds: number): number {

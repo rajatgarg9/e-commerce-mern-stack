@@ -1,10 +1,10 @@
-import axios, { Canceler } from "axios";
-
-import { getApiErrorMessage } from "@utilities/methods/miscellaneous";
+// eslint-disable-next-line import/no-cycle
+import { apiHandler } from "@src/utilities/api-handler";
 
 import { IThunkFunction } from "@interfaces/thunk-function.interface";
-import { ITryCatchError } from "@interfaces/try-catch-error.interface";
+import { IApiHandlerConfig } from "@interfaces/api-handler.interface";
 
+import { ApiMethodTypes } from "@enums/api-handler.enum";
 import { AuthActions } from "./enums/auth-actions.enum";
 
 import {
@@ -150,134 +150,72 @@ export function authLoadCookieDetails(
   };
 }
 
-let signupApiCanceller: Canceler;
-
 export const signup =
   (signupApiBody: ISignupApiBody): IThunkFunction =>
-  async (dispatch, getState, api) => {
-    try {
-      if (signupApiCanceller) {
-        signupApiCanceller("Operation canceled by the user.");
-      }
-
-      dispatch(authSignupStart());
-
-      const res = await api.post<ISignupApiResponse>(
-        "/auth/sign-up",
-        { ...signupApiBody },
-        {
-          cancelToken: new axios.CancelToken(function executor(apiCanceller) {
-            // An executor function receives a cancel function as a parameter
-            signupApiCanceller = apiCanceller;
-          }),
-        },
-      );
-
-      dispatch(authSignupSuccess(res.data));
-    } catch (error: unknown) {
-      if (!axios.isCancel(error)) {
-        dispatch(authSignupFail(getApiErrorMessage(error as ITryCatchError)));
-      }
-    }
+  async (dispatch, getState) => {
+    const config: IApiHandlerConfig<ISignupApiResponse, ISignupApiBody> = {
+      method: ApiMethodTypes.POST,
+      endpoint: "/auth/sign-up",
+      onStartCb: () => dispatch(authSignupStart()),
+      onSuccessCb: (data) => dispatch(authSignupSuccess(data)),
+      onFailCb: (data) => dispatch(authSignupFail(data)),
+      data: signupApiBody,
+      isPublic: true,
+    };
+    await apiHandler<ISignupApiResponse, ISignupApiBody>(
+      config,
+      dispatch,
+      getState,
+    );
   };
-
-let loginApiCanceller: Canceler;
 
 export const login =
   (loginApiBody: ILoginApiBody): IThunkFunction =>
-  async (dispatch, getState, api) => {
-    try {
-      if (loginApiCanceller) {
-        loginApiCanceller("Operation canceled by the user.");
-      }
-
-      dispatch(authLoginStart());
-
-      const res = await api.post<ILoginApiResponse>(
-        "/auth/login",
-        { ...loginApiBody },
-        {
-          cancelToken: new axios.CancelToken(function executor(apiCanceller) {
-            // An executor function receives a cancel function as a parameter
-            loginApiCanceller = apiCanceller;
-          }),
-        },
-      );
-
-      dispatch(authLoginSuccess(res.data));
-    } catch (error: unknown) {
-      if (!axios.isCancel(error)) {
-        dispatch(authLoginFail(getApiErrorMessage(error as ITryCatchError)));
-      }
-    }
+  async (dispatch, getState) => {
+    const config: IApiHandlerConfig<ILoginApiResponse, ILoginApiBody> = {
+      method: ApiMethodTypes.POST,
+      endpoint: "/auth/login",
+      onStartCb: () => dispatch(authLoginStart()),
+      onSuccessCb: (data) => dispatch(authLoginSuccess(data)),
+      onFailCb: (data) => dispatch(authLoginFail(data)),
+      data: loginApiBody,
+      isPublic: true,
+    };
+    await apiHandler<ILoginApiResponse, ILoginApiBody>(
+      config,
+      dispatch,
+      getState,
+    );
   };
 
-let logoutApiCanceller: Canceler;
-
-export const logout = (): IThunkFunction => async (dispatch, getState, api) => {
-  try {
-    if (logoutApiCanceller) {
-      logoutApiCanceller("Operation canceled by the user.");
-    }
-
-    dispatch(authLogoutStart());
-
-    const { refreshToken, accessToken, tokenType } = getState().auth;
-
-    await api.post(
-      "/auth/logout",
-      {},
-      {
-        cancelToken: new axios.CancelToken(function executor(apiCanceller) {
-          // An executor function receives a cancel function as a parameter
-          logoutApiCanceller = apiCanceller;
-        }),
-        headers: {
-          authorization: `${tokenType} ${accessToken}`,
-          refresh_token: refreshToken,
-        },
-      },
-    );
-
-    dispatch(authLogoutSuccess());
-  } catch (error: unknown) {
-    if (!axios.isCancel(error)) {
-      dispatch(authLogoutFail(getApiErrorMessage(error as ITryCatchError)));
-    }
-  }
+export const logout = (): IThunkFunction => async (dispatch, getState) => {
+  const { refreshToken } = getState().auth;
+  const config: IApiHandlerConfig = {
+    method: ApiMethodTypes.POST,
+    endpoint: "/auth/logout",
+    onStartCb: () => dispatch(authLogoutStart()),
+    onSuccessCb: () => dispatch(authLogoutSuccess()),
+    onFailCb: (data) => dispatch(authLogoutFail(data)),
+    headers: {
+      refresh_token: refreshToken,
+    },
+  };
+  await apiHandler(config, dispatch, getState);
 };
 
-let tokenRefreshApiCanceller: Canceler;
-
 export const tokenRefresh =
-  (): IThunkFunction => async (dispatch, getState, api) => {
-    try {
-      if (tokenRefreshApiCanceller) {
-        tokenRefreshApiCanceller("Operation canceled by the user.");
-      }
+  (): IThunkFunction => async (dispatch, getState) => {
+    const { refreshToken } = getState().auth;
 
-      dispatch(authTokenRefreshStart());
-
-      const { refreshToken } = getState().auth;
-
-      const res = await api.post<ITokenRefreshApiResponse>(
-        "/auth/token/refresh",
-        {},
-        {
-          cancelToken: new axios.CancelToken(function executor(apiCanceller) {
-            // An executor function receives a cancel function as a parameter
-            tokenRefreshApiCanceller = apiCanceller;
-          }),
-          headers: {
-            refresh_token: refreshToken,
-          },
-        },
-      );
-
-      dispatch(authTokenRefreshSuccess(res.data));
-    } catch (error: unknown) {
-      if (!axios.isCancel(error)) {
-        dispatch(authTokenRefreshFail());
-      }
-    }
+    const config: IApiHandlerConfig<ITokenRefreshApiResponse> = {
+      method: ApiMethodTypes.POST,
+      endpoint: "/auth/token/refresh",
+      onStartCb: () => dispatch(authTokenRefreshStart()),
+      onSuccessCb: (data) => dispatch(authTokenRefreshSuccess(data)),
+      onFailCb: () => dispatch(authTokenRefreshFail()),
+      headers: {
+        refresh_token: refreshToken,
+      },
+    };
+    await apiHandler<ITokenRefreshApiResponse>(config, dispatch, getState);
   };

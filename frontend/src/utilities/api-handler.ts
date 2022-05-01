@@ -8,6 +8,7 @@ import {
   getApiErrorStatus,
 } from "@utilities/methods/miscellaneous";
 
+// eslint-disable-next-line import/no-cycle
 import {
   tokenRefresh,
   authLogoutSuccess,
@@ -21,8 +22,8 @@ import { ApiMethodTypes, ApiErrorCodes } from "@enums/api-handler.enum";
 
 const controller = <{ [key: string]: AbortController }>{};
 
-export async function apiHandler<D, R>(
-  config: IApiHandlerConfig<D, R>,
+export async function apiHandler<R = void, D = void>(
+  config: IApiHandlerConfig<R, D>,
   dispatch: ThunkDispatch<IRootReducerState, AxiosInstance, AnyAction>,
   getState: () => IRootReducerState,
 ) {
@@ -38,17 +39,19 @@ export async function apiHandler<D, R>(
     onSuccessCb,
     onFailCb,
     isPublic,
+    cancelEndpointKey,
   } = config || {};
   try {
     if (onStartCb) {
       onStartCb();
     }
 
-    if (controller[endpoint]) {
-      controller[endpoint].abort();
+    const controllerKey = `${cancelEndpointKey || endpoint}-${method}`;
+    if (controller[controllerKey]) {
+      controller[controllerKey].abort();
     }
 
-    controller[endpoint] = new AbortController();
+    controller[controllerKey] = new AbortController();
 
     const { expiresAt, refreshToken } = getState().auth;
 
@@ -68,7 +71,7 @@ export async function apiHandler<D, R>(
     const res = await axios({
       method: method || ApiMethodTypes.GET,
       url: endpoint,
-      baseURL: baseURL || getBaseApiUrl(),
+      baseURL: baseURL || `${getBaseApiUrl()}/api/v1`,
       timeout: 2000,
       headers: {
         ...customHeaders,
@@ -77,10 +80,10 @@ export async function apiHandler<D, R>(
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       params,
       data,
-      signal: controller[endpoint].signal,
+      signal: controller[controllerKey].signal,
     });
 
-    delete controller[endpoint];
+    delete controller[controllerKey];
 
     if (onSuccessCb) {
       onSuccessCb(res.data as R);

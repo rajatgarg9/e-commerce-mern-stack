@@ -1,9 +1,8 @@
-import axios, { Canceler } from "axios";
-
-import { getApiErrorMessage } from "@utilities/methods/miscellaneous";
+import { apiHandler } from "@src/utilities/api-handler";
 
 import { IThunkFunction } from "@interfaces/thunk-function.interface";
-import { ITryCatchError } from "@interfaces/try-catch-error.interface";
+import { IApiHandlerConfig } from "@interfaces/api-handler.interface";
+
 import {
   ISingleProductFetchStart,
   ISingleProductFetchSuccess,
@@ -13,6 +12,7 @@ import {
 
 import { ISingleProductAPIResponse } from "@action-reducers/single-product/interfaces/single-product-api-response.interface";
 
+import { ApiMethodTypes } from "@enums/api-handler.enum";
 import { SingleProductActions } from "./enums/single-product-actions.enum";
 
 const {
@@ -52,34 +52,16 @@ export function singleProductReset(): ISingleProductReset {
   };
 }
 
-let fetchSingleProductApiCanceller: Canceler;
-
 export const fetchSingleProduct =
   (productId: string): IThunkFunction =>
-  async (dispatch, getState, api) => {
-    try {
-      if (fetchSingleProductApiCanceller) {
-        fetchSingleProductApiCanceller("Operation canceled by the user.");
-      }
-
-      dispatch(singleProductFetchStart());
-
-      const res = await api.get<ISingleProductAPIResponse>(
-        `/products/${productId}`,
-        {
-          cancelToken: new axios.CancelToken(function executor(apiCanceller) {
-            // An executor function receives a cancel function as a parameter
-            fetchSingleProductApiCanceller = apiCanceller;
-          }),
-        },
-      );
-
-      dispatch(singleProductFetchSuccess(res.data));
-    } catch (error: unknown) {
-      if (!axios.isCancel(error)) {
-        dispatch(
-          singleProductFetchFail(getApiErrorMessage(error as ITryCatchError)),
-        );
-      }
-    }
+  async (dispatch, getState) => {
+    const config: IApiHandlerConfig<ISingleProductAPIResponse> = {
+      method: ApiMethodTypes.GET,
+      endpoint: `/products/${productId}`,
+      cancelEndpointKey: "/products/id",
+      onStartCb: () => dispatch(singleProductFetchStart()),
+      onSuccessCb: (data) => dispatch(singleProductFetchSuccess(data)),
+      onFailCb: (data) => dispatch(singleProductFetchFail(data)),
+    };
+    await apiHandler<ISingleProductAPIResponse>(config, dispatch, getState);
   };

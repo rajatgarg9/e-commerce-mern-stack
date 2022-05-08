@@ -3,6 +3,8 @@ import axios, { AxiosInstance } from "axios";
 import { IApiError } from "@interfaces/api-error.interface";
 import { ITryCatchError } from "@interfaces/try-catch-error.interface";
 
+import { ApiErrorCodes } from "@enums/api-handler.enum";
+
 export function isClient(): boolean {
   return typeof window !== "undefined";
 }
@@ -20,6 +22,10 @@ export function getApiErrorMessage(error: ITryCatchError): IApiError {
   }
 
   return "Something went wrong.";
+}
+
+export function getApiErrorStatus(error: ITryCatchError): ApiErrorCodes {
+  return error.response.status;
 }
 
 export function getDaysFromSeconds(milliseconds: number): number {

@@ -56,3 +56,5 @@ export const initializeStore = (preloadedState?: IRootReducerState) => {
 export function useStore(initialState?: IRootReducerState) {
   return useMemo(() => initializeStore(initialState), [initialState]);
 }
+
+export const stores = store;

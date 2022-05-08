@@ -5,6 +5,7 @@ export interface IAuthReducerMainData {
   refreshToken: string;
   expiresIn: number;
   tokenType: string;
+  expiresAt: string;
 }
 
 export interface IAuthReducerState extends IAuthReducerMainData {

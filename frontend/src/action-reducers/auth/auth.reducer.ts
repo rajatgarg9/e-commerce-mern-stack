@@ -38,6 +38,7 @@ const defaultAuthReducer: IAuthReducerState = {
   refreshToken: "",
   expiresIn: 0,
   tokenType: "",
+  expiresAt: "",
 };
 
 const authReducer = (

@@ -23,20 +23,20 @@ function userDetails<PropTypes>(WrappedComponent: NextPage<PropTypes>): {
 } {
   function ChildComponent(props: PropTypes) {
     const id = useSelector((state: IRootReducerState) => state.userDetails.id);
-    const accessToken = useSelector(
-      (state: IRootReducerState) => state.auth.accessToken,
+    const refreshToken = useSelector(
+      (state: IRootReducerState) => state.auth.refreshToken,
     );
     const dispatch = useDispatch();
 
     useEffect(() => {
-      if (accessToken) {
+      if (refreshToken) {
         dispatch(fetchUserDetails(true));
       }
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [accessToken]);
+    }, [refreshToken]);
 
-    if (accessToken && !id) {
+    if (refreshToken && !id) {
       return <PageLoader {...props} />;
     }
 

@@ -18,15 +18,16 @@ function requireAuth<PropTypes>(WrappedComponent: NextPage<PropTypes>): {
       (state: IRootReducerState) => state.auth.isTokenRefreshInProgress,
     );
 
-    if (isTokenRefreshInProgress) {
-      return <PageLoader {...props} />;
-    }
-
     if (!accessToken) {
       return <AuthenticationPage />;
     }
 
-    return <WrappedComponent {...props} />;
+    return (
+      <>
+        <WrappedComponent {...props} />
+        {isTokenRefreshInProgress && <PageLoader {...props} />}
+      </>
+    );
   }
 
   ChildComponent.getInitialProps = async (ctx: NextPageContext) => {

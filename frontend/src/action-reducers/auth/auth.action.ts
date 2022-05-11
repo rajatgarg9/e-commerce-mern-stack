@@ -7,6 +7,8 @@ import { IApiHandlerConfig } from "@interfaces/api-handler.interface";
 import { ApiMethodTypes } from "@enums/api-handler.enum";
 import { AuthActions } from "./enums/auth-actions.enum";
 
+import { getDataWithExpireAt } from "./auth.action.utility";
+
 import {
   ISignupApiBody,
   ISignupApiResponse,
@@ -159,12 +161,7 @@ export const signup =
       onStartCb: () => dispatch(authSignupStart()),
       onSuccessCb: (data) =>
         dispatch(
-          authSignupSuccess({
-            ...data,
-            expiresAt: new Date(
-              Date.now() + data.expiresIn * 1000,
-            ).toISOString(),
-          }),
+          authSignupSuccess(getDataWithExpireAt<ISignupApiResponse>(data)),
         ),
       onFailCb: (data) => dispatch(authSignupFail(data)),
       data: signupApiBody,
@@ -186,12 +183,7 @@ export const login =
       onStartCb: () => dispatch(authLoginStart()),
       onSuccessCb: (data) =>
         dispatch(
-          authLoginSuccess({
-            ...data,
-            expiresAt: new Date(
-              Date.now() + data.expiresIn * 1000,
-            ).toISOString(),
-          }),
+          authLoginSuccess(getDataWithExpireAt<ILoginApiResponse>(data)),
         ),
       onFailCb: (data) => dispatch(authLoginFail(data)),
       data: loginApiBody,
@@ -227,7 +219,12 @@ export const tokenRefresh =
       method: ApiMethodTypes.POST,
       endpoint: "/auth/token/refresh",
       onStartCb: () => dispatch(authTokenRefreshStart()),
-      onSuccessCb: (data) => dispatch(authTokenRefreshSuccess(data)),
+      onSuccessCb: (data) =>
+        dispatch(
+          authTokenRefreshSuccess(
+            getDataWithExpireAt<ITokenRefreshApiResponse>(data),
+          ),
+        ),
       onFailCb: () => dispatch(authTokenRefreshFail()),
       headers: {
         refresh_token: refreshToken,

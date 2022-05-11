@@ -53,19 +53,13 @@ const authReducer = (
         return draft;
       }
       case AUTH_SIGNUP_SUCCESS: {
-        const data = {
-          ...action?.payload,
-          expiresAt: new Date(
-            Date.now() + action.payload.expiresIn * 1000,
-          ).toISOString(),
-        };
-        setClientAuthCookies(data);
+        setClientAuthCookies(action?.payload);
 
         return {
           ...draft,
           isSignupInProgress: false,
           signupErrors: [],
-          ...data,
+          ...action?.payload,
         };
       }
 
@@ -82,19 +76,13 @@ const authReducer = (
         return draft;
       }
       case AUTH_LOGIN_SUCCESS: {
-        const data = {
-          ...action?.payload,
-          expiresAt: new Date(
-            Date.now() + action.payload.expiresIn * 1000,
-          ).toISOString(),
-        };
-        setClientAuthCookies(data);
+        setClientAuthCookies(action?.payload);
 
         return {
           ...draft,
           isLoginInProgress: false,
           loginErrors: [],
-          ...data,
+          ...action?.payload,
         };
       }
 

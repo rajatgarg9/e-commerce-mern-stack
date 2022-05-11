@@ -157,7 +157,15 @@ export const signup =
       method: ApiMethodTypes.POST,
       endpoint: "/auth/sign-up",
       onStartCb: () => dispatch(authSignupStart()),
-      onSuccessCb: (data) => dispatch(authSignupSuccess(data)),
+      onSuccessCb: (data) =>
+        dispatch(
+          authSignupSuccess({
+            ...data,
+            expiresAt: new Date(
+              Date.now() + data.expiresIn * 1000,
+            ).toISOString(),
+          }),
+        ),
       onFailCb: (data) => dispatch(authSignupFail(data)),
       data: signupApiBody,
       isPublic: true,
@@ -176,7 +184,15 @@ export const login =
       method: ApiMethodTypes.POST,
       endpoint: "/auth/login",
       onStartCb: () => dispatch(authLoginStart()),
-      onSuccessCb: (data) => dispatch(authLoginSuccess(data)),
+      onSuccessCb: (data) =>
+        dispatch(
+          authLoginSuccess({
+            ...data,
+            expiresAt: new Date(
+              Date.now() + data.expiresIn * 1000,
+            ).toISOString(),
+          }),
+        ),
       onFailCb: (data) => dispatch(authLoginFail(data)),
       data: loginApiBody,
       isPublic: true,

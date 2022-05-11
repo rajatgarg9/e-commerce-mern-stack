@@ -2,15 +2,11 @@ import { getCookie, setCookie, CookieNames } from "@utilities/methods/cookies";
 
 import { IAuthReducerMainData } from "@src/action-reducers/auth/interfaces/auth-reducer-state.interface";
 import { IAuthTokenRefreshSuccessActionResponse } from "@src/action-reducers/auth/interfaces/auth-action.interface";
-import { isClient, getDaysFromSeconds } from "./miscellaneous";
+import { isClient } from "./miscellaneous";
 
 export function setClientAuthCookies(authData: IAuthReducerMainData): void {
   if (isClient()) {
-    setCookie(
-      CookieNames.AUTHORIZATION,
-      JSON.stringify(authData),
-      getDaysFromSeconds(authData.expiresIn),
-    );
+    setCookie(CookieNames.AUTHORIZATION, JSON.stringify(authData), 365);
   }
 }
 

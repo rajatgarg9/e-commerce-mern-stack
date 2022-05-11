@@ -22,7 +22,7 @@ import {
 
 import { IServerSideFunctionReturn } from "@interfaces/server-side-function.interface";
 
-import { isClient, getDaysFromSeconds } from "@utilities/methods/miscellaneous";
+import { isClient } from "@utilities/methods/miscellaneous";
 import { getCookie, setCookie, CookieNames } from "@utilities/methods/cookies";
 
 import styles from "./index.module.scss";
@@ -94,7 +94,7 @@ Home.getInitialProps = async (
         expiresAt: store.getState().auth.expiresAt,
         tokenType: store.getState().auth.tokenType,
       }),
-      getDaysFromSeconds(store.getState().auth.expiresIn),
+      365,
     ),
   );
 

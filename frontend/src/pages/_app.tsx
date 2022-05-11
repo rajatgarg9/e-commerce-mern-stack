@@ -1,3 +1,4 @@
+import "abortcontroller-polyfill/dist/polyfill-patch-fetch";
 import "@scss/index.scss";
 
 import { Provider } from "react-redux";

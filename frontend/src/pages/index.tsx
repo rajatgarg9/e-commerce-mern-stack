@@ -6,6 +6,7 @@ import Header from "@components/common/header/header";
 import ProductListSection from "@components/product-list-page/product-list-section/product-list-section";
 
 import requireAuth from "@src/hoc/requireAuth";
+import userDetails from "@src/hoc/userDetails";
 
 import { initializeStore } from "@src/store";
 
@@ -49,7 +50,7 @@ function Home({ hasServerFetchedData }: any) {
   );
 }
 
-export default requireAuth(Home);
+export default requireAuth(userDetails(Home));
 
 Home.getInitialProps = async (
   ctx: NextPageContext,

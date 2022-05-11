@@ -3,27 +3,17 @@ import { useSelector } from "react-redux";
 import { NextPageContext, NextPage } from "next";
 
 import PageLoader from "@src/non-route-pages/page-loader/page-loader";
-import AuthenticationPage from "@src/non-route-pages/authentication-page/authentication-page";
 
 import { IRootReducerState } from "@action-reducers/root.reducer";
 
-function requireAuth<PropTypes>(WrappedComponent: NextPage<PropTypes>): {
+function userDetails<PropTypes>(WrappedComponent: NextPage<PropTypes>): {
   (props: PropTypes): JSX.Element;
 } {
   function ChildComponent(props: PropTypes) {
-    const accessToken = useSelector(
-      (state: IRootReducerState) => state.auth.accessToken,
-    );
-    const isTokenRefreshInProgress = useSelector(
-      (state: IRootReducerState) => state.auth.isTokenRefreshInProgress,
-    );
+    const id = useSelector((state: IRootReducerState) => state.userDetails.id);
 
-    if (isTokenRefreshInProgress) {
+    if (!id) {
       return <PageLoader {...props} />;
-    }
-
-    if (!accessToken) {
-      return <AuthenticationPage />;
     }
 
     return <WrappedComponent {...props} />;
@@ -41,4 +31,4 @@ function requireAuth<PropTypes>(WrappedComponent: NextPage<PropTypes>): {
   return ChildComponent;
 }
 
-export default requireAuth;
+export default userDetails;

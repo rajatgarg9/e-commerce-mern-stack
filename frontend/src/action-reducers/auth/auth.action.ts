@@ -216,6 +216,7 @@ export const tokenRefresh =
       headers: {
         refresh_token: refreshToken,
       },
+      isPublic: true,
     };
     await apiHandler<ITokenRefreshApiResponse>(config, dispatch, getState);
   };

@@ -22,7 +22,7 @@ import {
 
 import { IServerSideFunctionReturn } from "@interfaces/server-side-function.interface";
 
-import { isClient } from "@utilities/methods/miscellaneous";
+import { isClient, getDaysFromSeconds } from "@utilities/methods/miscellaneous";
 import { getCookie, setCookie, CookieNames } from "@utilities/methods/cookies";
 
 import styles from "./index.module.scss";
@@ -70,19 +70,33 @@ Home.getInitialProps = async (
   if (authorization?.accessToken) {
     store.dispatch(authLoadCookieDetails(authorization));
 
-    if (authorization.expiresIn < Date.now()) {
+    if (new Date(authorization.expiresAt).getTime() < Date.now()) {
       await store.dispatch(tokenRefresh());
     }
   }
-
   const { accessToken } = store.getState().auth;
+
+  await store.dispatch(tokenRefresh());
 
   if (accessToken) {
     await store.dispatch(fetchUserDetails());
     await store.dispatch(fetchProductList());
-  } else {
-    res?.setHeader("set-cookie", setCookie(CookieNames.AUTHORIZATION, "", -1));
   }
+
+  res?.setHeader(
+    "set-cookie",
+    setCookie(
+      CookieNames.AUTHORIZATION,
+      JSON.stringify({
+        accessToken: store.getState().auth.accessToken,
+        refreshToken: store.getState().auth.refreshToken,
+        expiresIn: store.getState().auth.expiresIn,
+        expiresAt: store.getState().auth.expiresAt,
+        tokenType: store.getState().auth.tokenType,
+      }),
+      getDaysFromSeconds(store.getState().auth.expiresIn),
+    ),
+  );
 
   return { initialReduxState: store.getState(), hasServerFetchedData: true };
 };

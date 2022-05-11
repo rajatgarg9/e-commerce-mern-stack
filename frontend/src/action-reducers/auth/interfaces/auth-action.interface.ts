@@ -10,7 +10,7 @@ export interface IAuthLoginStartActionResponse {
 
 export interface IAuthLoginSuccessActionResponse {
   type: AuthActions.AUTH_LOGIN_SUCCESS;
-  payload: IAuthReducerMainData;
+  payload: Omit<IAuthReducerMainData, "expiresAt">;
 }
 
 export interface IAuthLoginFailActionResponse {
@@ -24,7 +24,7 @@ export interface IAuthSignupStartActionResponse {
 
 export interface IAuthSignupSuccessActionResponse {
   type: AuthActions.AUTH_SIGNUP_SUCCESS;
-  payload: IAuthReducerMainData;
+  payload: Omit<IAuthReducerMainData, "expiresAt">;
 }
 
 export interface IAuthSignupFailActionResponse {

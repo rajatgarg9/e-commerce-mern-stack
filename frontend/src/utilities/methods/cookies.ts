@@ -20,7 +20,10 @@ export function setCookie(cname: CookieNames, cvalue: string, exdays = 1) {
 
 export function getCookie(cname: CookieNames, cookie?: string): string {
   const name = `${cname}=`;
-  const decodedCookie = decodeURIComponent(cookie || document.cookie);
+  let decodedCookie = cookie ? decodeURIComponent(cookie) : "";
+  if (isClient()) {
+    decodedCookie = decodeURIComponent(document.cookie);
+  }
   const ca = decodedCookie.split(";");
   for (let i = 0; i < ca.length; ++i) {
     let c = ca[i];

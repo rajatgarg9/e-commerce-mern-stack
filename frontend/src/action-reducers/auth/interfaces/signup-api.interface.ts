@@ -1,6 +1,6 @@
 import { IAuthReducerMainData } from "./auth-reducer-state.interface";
 
-export type ISignupApiResponse = IAuthReducerMainData;
+export type ISignupApiResponse = Omit<IAuthReducerMainData, "expiresAt">;
 
 export interface ISignupApiBody {
   name: string;

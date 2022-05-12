@@ -1,3 +1,7 @@
+import { NextPageContext } from "next";
+
+import { IStore } from "@interfaces/store.interface";
+
 import { IRootReducerState } from "@src/action-reducers/root.reducer";
 
 export interface IServerSideFunctionDataFetchReturn {
@@ -12,3 +16,5 @@ interface IServerSideFunctionNoDataFetchReturn {
 export type IServerSideFunctionReturn =
   | IServerSideFunctionDataFetchReturn
   | IServerSideFunctionNoDataFetchReturn;
+
+export type INextPageContext = NextPageContext & { store: IStore };

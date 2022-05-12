@@ -42,11 +42,12 @@ export function userDetailsFetchFail(
 }
 
 export const fetchUserDetails =
-  (): IThunkFunction => async (dispatch, getState) => {
+  (isSilent?: boolean): IThunkFunction =>
+  async (dispatch, getState) => {
     const config: IApiHandlerConfig<IUserDetailsApiResponse> = {
       method: ApiMethodTypes.GET,
       endpoint: `/users/@me`,
-      onStartCb: () => dispatch(userDetailsFetchStart()),
+      onStartCb: isSilent ? undefined : () => dispatch(userDetailsFetchStart()),
       onSuccessCb: (data) => dispatch(userDetailsFetchSuccess(data)),
       onFailCb: (data) => dispatch(userDetailsFetchFail(data)),
     };

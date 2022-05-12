@@ -20,7 +20,7 @@ import {
   tokenRefresh,
 } from "@action-reducers/auth/auth.action";
 
-import { IServerSideFunctionReturn } from "@interfaces/server-side-function.interface";
+import { IServerSideFunctionReturn } from "@src/interfaces/get-initial-props.interface";
 
 import { isClient } from "@utilities/methods/miscellaneous";
 import { getCookie, setCookie, CookieNames } from "@utilities/methods/cookies";

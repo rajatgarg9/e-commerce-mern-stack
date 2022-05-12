@@ -1,6 +1,6 @@
 import type { AppProps } from "next/app";
 
-import { IServerSideFunctionDataFetchReturn } from "./server-side-function.interface";
+import { IServerSideFunctionDataFetchReturn } from "./get-initial-props.interface";
 
 interface IAppPageProps
   extends Omit<IServerSideFunctionDataFetchReturn, "hasServerFetchedData"> {

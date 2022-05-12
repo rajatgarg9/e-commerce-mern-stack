@@ -10,7 +10,7 @@ interface ICommonApiHandlerConfig<R> {
   headers?: AxiosRequestHeaders;
   params?: any;
   baseURL?: string;
-  onStartCb: () => any;
+  onStartCb?: () => any;
   onSuccessCb: (res: R) => any;
   onFailCb: (error: IApiError) => any;
   isPublic?: boolean;

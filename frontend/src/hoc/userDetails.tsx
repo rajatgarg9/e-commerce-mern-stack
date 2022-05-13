@@ -15,10 +15,13 @@ import { authLoadCookieDetails } from "@action-reducers/auth/auth.action";
 import { fetchUserDetails } from "@action-reducers/user-details/user-details.action";
 
 import { INextPageContext } from "@interfaces/get-initial-props.interface";
+import { IPageCommonProps } from "@interfaces/page-common-props.interface";
 
 import { IAuthReducerMainData } from "@action-reducers/auth/interfaces/auth-reducer-state.interface";
 
-function userDetails<PropTypes>(WrappedComponent: NextPage<PropTypes>): {
+function userDetails<PropTypes extends IPageCommonProps>(
+  WrappedComponent: NextPage<PropTypes>,
+): {
   (props: PropTypes): JSX.Element;
 } {
   function ChildComponent(props: PropTypes) {
@@ -28,8 +31,10 @@ function userDetails<PropTypes>(WrappedComponent: NextPage<PropTypes>): {
     );
     const dispatch = useDispatch();
 
+    const { hasServerFetchedData } = props || {};
+
     useEffect(() => {
-      if (refreshToken) {
+      if (!hasServerFetchedData && refreshToken) {
         dispatch(fetchUserDetails(true));
       }
 

@@ -7,7 +7,11 @@ import AuthenticationPage from "@src/non-route-pages/authentication-page/authent
 
 import { IRootReducerState } from "@action-reducers/root.reducer";
 
-function requireAuth<PropTypes>(WrappedComponent: NextPage<PropTypes>): {
+import { IPageCommonProps } from "@interfaces/page-common-props.interface";
+
+function requireAuth<PropTypes extends IPageCommonProps>(
+  WrappedComponent: NextPage<PropTypes>,
+): {
   (props: PropTypes): JSX.Element;
 } {
   function ChildComponent(props: PropTypes) {

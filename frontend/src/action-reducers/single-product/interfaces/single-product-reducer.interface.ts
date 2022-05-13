@@ -4,4 +4,5 @@ import { ISingleProductAPIResponse } from "@action-reducers/single-product/inter
 export interface ISingleProductReducerState extends ISingleProductAPIResponse {
   isLoading: boolean;
   errors: IApiError;
+  isInitialLoadFetchedSuccessfully: boolean;
 }

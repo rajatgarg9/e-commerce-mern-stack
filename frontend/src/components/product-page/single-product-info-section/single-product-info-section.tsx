@@ -1,8 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import Image from "next/image";
 
 import LoaderErrorComponent from "@src/components/common/loader-error-component/loader-error-component";
-import Image from "@src/components/common/image/image";
+import Button from "@src/components/common/button/button";
 
 import { IRootReducerState } from "@src/action-reducers/root.reducer";
 
@@ -28,6 +29,12 @@ function SingleProductInfoSection({
   const price = useSelector(
     (state: IRootReducerState) => state.singleProduct.price,
   );
+  const availableQuantity = useSelector(
+    (state: IRootReducerState) => state.singleProduct.availableQuantity,
+  );
+  const seller = useSelector(
+    (state: IRootReducerState) => state.singleProduct.seller,
+  );
 
   const { amount, currency } = price || {};
 
@@ -42,19 +49,37 @@ function SingleProductInfoSection({
         />
         {!hasError && !isLoading && (
           <div className={styles.productCntnt}>
-            <div className={styles.productImageWrap}>
-              <Image
-                src={imageUrl as string}
-                alt={name as string}
-                className={styles.productImage}
-              />
-            </div>
+            {imageUrl && (
+              <div className={styles.productImageWrap}>
+                <Image
+                  layout="fill"
+                  loader={() => imageUrl}
+                  src={imageUrl}
+                  alt={name}
+                />
+              </div>
+            )}
             <div className={styles.rightSec}>
               <h2 className={`${styles.name} typo_heading_1`}>{name}</h2>
-              <p className={`${styles.priceInfo} typo_body_1`}>
-                Price: {amount}
-                {currency}
+              <p className={`${styles.priceInfo} typo_heading_5`}>
+                Price: {amount} {currency}
               </p>
+              {seller?.name && (
+                <p className={`${styles.seller} typo_body_1`}>
+                  Seller: {seller.name}
+                </p>
+              )}
+              {availableQuantity < 1 && (
+                <p className={`${styles.outStock} typo_body_1`}>Out of stock</p>
+              )}
+              <div className={styles.buttonWrap}>
+                <Button
+                  onClick={() => undefined}
+                  isDisabled={availableQuantity < 1}
+                >
+                  Add to cart
+                </Button>
+              </div>
             </div>
           </div>
         )}

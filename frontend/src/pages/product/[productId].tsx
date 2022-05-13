@@ -1,35 +1,39 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { NextPageContext } from "next";
+import { useDispatch, useSelector } from "react-redux";
+import { NextPage } from "next";
+import { useRouter } from "next/router";
 
 import Header from "@components/common/header/header";
 import SingleProductInfoSection from "@components/product-page/single-product-info-section/single-product-info-section";
 
-import requireAuth from "@src/hoc/requireAuth";
+import userDetails from "@src/hoc/userDetails";
 
-import { initializeStore } from "@src/store";
-
-import { IAuthReducerMainData } from "@action-reducers/auth/interfaces/auth-reducer-state.interface";
-import { fetchUserDetails } from "@action-reducers/user-details/user-details.action";
 import {
   fetchSingleProduct,
   singleProductReset,
 } from "@action-reducers/single-product/single-product.action";
-import {
-  authLoadCookieDetails,
-  tokenRefresh,
-} from "@action-reducers/auth/auth.action";
 
-import { IServerSideFunctionReturn } from "@src/interfaces/get-initial-props.interface";
+import { loadData } from "@src/pages-utility/product-page";
 
-import { isClient } from "@utilities/methods/miscellaneous";
-import { getCookie, setCookie, CookieNames } from "@utilities/methods/cookies";
+import { IRootReducerState } from "@action-reducers/root.reducer";
+import { INextPageContext } from "@interfaces/get-initial-props.interface";
 
 import styles from "./product.module.scss";
 
 function Product() {
+  const isInitialLoadFetchedSuccessfully = useSelector(
+    (state: IRootReducerState) =>
+      state.singleProduct.isInitialLoadFetchedSuccessfully,
+  );
+  const router = useRouter();
+  const { productId } = router.query;
+
   const dispatch = useDispatch();
   useEffect(() => {
+    if (!isInitialLoadFetchedSuccessfully) {
+      dispatch(fetchSingleProduct(productId as string));
+    }
+
     return () => {
       dispatch(singleProductReset());
     };
@@ -43,40 +47,11 @@ function Product() {
   );
 }
 
-export default requireAuth(Product);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default userDetails(Product as NextPage<any>);
 
-Product.getInitialProps = async (
-  ctx: NextPageContext,
-): Promise<IServerSideFunctionReturn> => {
-  if (isClient()) {
-    return { hasServerFetchedData: false };
-  }
+Product.getInitialProps = async (ctx: INextPageContext) => {
+  const { query: { productId } = {} } = ctx;
 
-  const store = initializeStore();
-
-  const { req, res, query: { productId } = {} } = ctx;
-  const cookie = req?.headers.cookie;
-
-  const cookieAuthorization = getCookie(CookieNames.AUTHORIZATION, cookie);
-  const authorization = (cookieAuthorization &&
-    JSON.parse(cookieAuthorization)) as IAuthReducerMainData;
-
-  if (authorization?.accessToken) {
-    store.dispatch(authLoadCookieDetails(authorization));
-
-    if (authorization.expiresIn < Date.now()) {
-      await store.dispatch(tokenRefresh());
-    }
-  }
-
-  const { accessToken } = store.getState().auth;
-
-  if (accessToken) {
-    await store.dispatch(fetchUserDetails());
-    await store.dispatch(fetchSingleProduct(productId as string));
-  } else {
-    res?.setHeader("set-cookie", setCookie(CookieNames.AUTHORIZATION, "", -1));
-  }
-
-  return { initialReduxState: store.getState(), hasServerFetchedData: true };
+  await loadData(ctx.store.dispatch, productId as string);
 };

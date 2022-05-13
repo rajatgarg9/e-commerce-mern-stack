@@ -40,16 +40,12 @@ function userDetails<PropTypes extends IPageCommonProps>(
     useEffect(() => {
       if (refreshToken && !id) {
         dispatch(fetchUserDetails(true));
+      } else if (!refreshToken && id) {
+        dispatch(userDetailsResetData());
       }
 
-      return () => {
-        if (id) {
-          dispatch(userDetailsResetData());
-        }
-      };
-
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [refreshToken, id]);
+    }, [refreshToken]);
 
     return (
       <>

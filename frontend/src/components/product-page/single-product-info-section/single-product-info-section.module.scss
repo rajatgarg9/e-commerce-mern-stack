@@ -9,45 +9,62 @@
 }
 
 .productImageWrap {
-  width: 100%;
-  height: 300px;
+  border-radius: 20px;
+  overflow: hidden;
+  height: 200px;
   background-color: rgba($color_6, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.productImage {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+  position: relative;
 }
 
 .rightSec {
   color: $color_1;
-  text-align: center;
   padding: 10px;
 }
 
 .name {
+  color: $color_6;
   text-transform: capitalize;
 }
 
-.priceInfo {
-  margin-top: 10px;
+.seller {
+  margin-top: 5px;
+}
+
+.outStock {
+  text-align: center;
+  color: $color_2;
+  margin-top: 20px;
+}
+
+.buttonWrap {
+  text-align: center;
+  margin-top: 20px;
 }
 
 @include desktop {
   .productCntnt {
     display: flex;
+    justify-content: space-between;
   }
 
   .productImageWrap {
-    width: 30%;
+    width: 40%;
+    height: 70vh;
+    position: relative;
   }
 
   .rightSec {
+    width: 55%;
+  }
+
+  .outStock {
     text-align: left;
-    width: 70%;
+  }
+
+  .buttonWrap {
+    text-align: left;
   }
 }

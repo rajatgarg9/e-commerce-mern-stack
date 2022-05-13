@@ -38,6 +38,19 @@
   letter-spacing: normal;
 }
 
+@mixin typo_heading_5 {
+  font-family: $font_family;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+  font-style: normal;
+  letter-spacing: 0.4px;
+
+  @include desktop {
+    font-size: 16px;
+  }
+}
+
 @mixin typo_body_1 {
   font-family: $font_family;
   font-size: 14px;

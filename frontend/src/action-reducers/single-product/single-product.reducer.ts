@@ -15,6 +15,7 @@ const {
 const defaultSingleProductReducer: ISingleProductReducerState = {
   isLoading: false,
   errors: [],
+  isInitialLoadFetchedSuccessfully: false,
 };
 
 const singleProductReducer = (
@@ -34,6 +35,7 @@ const singleProductReducer = (
           return {
             ...draft,
             isLoading: false,
+            isInitialLoadFetchedSuccessfully: true,
             errors: [],
             ...action?.payload,
           };

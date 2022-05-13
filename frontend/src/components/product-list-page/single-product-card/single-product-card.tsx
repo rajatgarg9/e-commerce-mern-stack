@@ -1,6 +1,6 @@
 import React from "react";
+import Image from "next/image";
 
-import Image from "@components/common/image/image";
 import Button from "@components/common/button/button";
 
 import { ButtonTagTypes } from "@components/common/button/button.enum";
@@ -20,7 +20,12 @@ function SingleProductCard({
   return (
     <div className={`${styles.snglPodctCrd} ${className}`}>
       <div className={styles.podctImgWrap}>
-        <Image src={imageUrl} alt={name} className={styles.podctImg} />
+        <Image
+          loader={() => imageUrl}
+          src={imageUrl}
+          alt={name}
+          layout="fill"
+        />
       </div>
       <div className={styles.bottomCntnt}>
         <h6 className={`${styles.productName} typo_heading_3`}>{name}</h6>

@@ -24,6 +24,7 @@ function Popup({ children, onPopupClose }: IPopupProps) {
     const eventCode = (event as React.KeyboardEvent<HTMLDivElement>).keyCode;
 
     if (
+      onPopupClose &&
       (eventCode === KeyboardEvets.ENTER || typeof eventCode !== "number") &&
       (popupRef?.current === event.target ||
         contentRef?.current === event.target)

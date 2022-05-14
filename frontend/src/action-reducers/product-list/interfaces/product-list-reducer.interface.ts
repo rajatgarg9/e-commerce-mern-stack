@@ -4,6 +4,7 @@ import { IProductListAPIResponse } from "@action-reducers/product-list/interface
 export interface IProductListReducerState extends IProductListAPIResponse {
   isLoading: boolean;
   errors: IApiError;
+  isInitialLoadFetchedSuccessfully: boolean;
   isLoadingMoreInProgress: boolean;
   loadMoreError: IApiError;
 }

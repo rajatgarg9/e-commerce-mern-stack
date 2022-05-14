@@ -1,4 +1,4 @@
 export interface IPopupProps {
   children: JSX.Element;
-  onPopupClose: () => void;
+  onPopupClose?: () => void;
 }

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NextPage } from "next";
 
 import Header from "@components/common/header/header";
@@ -12,16 +12,19 @@ import { productListReset } from "@action-reducers/product-list/product-list.act
 import { loadData } from "@src/pages-utility/home-page";
 
 import { INextPageContext } from "@interfaces/get-initial-props.interface";
-
-import { IPageCommonProps } from "@interfaces/page-common-props.interface";
+import { IRootReducerState } from "@action-reducers/root.reducer";
 
 import styles from "./index.module.scss";
 
-function Home({ hasServerFetchedData }: IPageCommonProps) {
+function Home() {
+  const isInitialLoadFetchedSuccessfully = useSelector(
+    (state: IRootReducerState) =>
+      state.productList.isInitialLoadFetchedSuccessfully,
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!hasServerFetchedData) {
+    if (!isInitialLoadFetchedSuccessfully) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       loadData(dispatch);
     }

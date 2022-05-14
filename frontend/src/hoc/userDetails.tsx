@@ -4,7 +4,7 @@ import { NextPage } from "next";
 
 import { initializeStore } from "@src/store";
 
-import PageLoader from "@src/non-route-pages/page-loader/page-loader";
+import PopupLoader from "@src/non-route-pages/popup-loader/popup-loader";
 
 import { IRootReducerState } from "@action-reducers/root.reducer";
 
@@ -32,29 +32,32 @@ function userDetails<PropTypes extends IPageCommonProps>(
     const refreshToken = useSelector(
       (state: IRootReducerState) => state.auth.refreshToken,
     );
+    const isLogoutInProgress = useSelector(
+      (state: IRootReducerState) => state.auth.isLogoutInProgress,
+    );
     const dispatch = useDispatch();
 
-    const { hasServerFetchedData } = props || {};
-
     useEffect(() => {
-      if (!hasServerFetchedData && refreshToken) {
+      if (refreshToken && !id) {
         dispatch(fetchUserDetails(true));
       }
 
       return () => {
-        if (!refreshToken) {
+        if (id) {
           dispatch(userDetailsResetData());
         }
       };
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [refreshToken]);
+    }, [refreshToken, id]);
 
-    if (refreshToken && !id) {
-      return <PageLoader {...props} />;
-    }
-
-    return <WrappedComponent {...props} />;
+    return (
+      <>
+        <WrappedComponent {...props} />
+        {(refreshToken && !id) ||
+          (isLogoutInProgress && <PopupLoader {...props} />)}
+      </>
+    );
   }
 
   ChildComponent.getInitialProps = async (ctx: INextPageContext) => {

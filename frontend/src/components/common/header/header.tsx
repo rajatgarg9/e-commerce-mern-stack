@@ -53,7 +53,6 @@ function Header({ className = "" }: IHeaderPropTypes) {
                 </div>
                 <Button
                   onClick={() => {
-                    window.location.reload();
                     dispatch(logout());
                   }}
                   className={styles.logoutBtn}

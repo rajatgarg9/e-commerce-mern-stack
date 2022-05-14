@@ -1,20 +1,19 @@
 import React from "react";
 
 import Loader from "@components/common/loader/loader";
+import Popup from "@src/components/common/popup/popup";
 
 import { LoaderSizes } from "@components/common/loader/loader.enum";
 
 import { IPageCommonProps } from "@interfaces/page-common-props.interface";
 
-import styles from "./page-loader.module.scss";
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function PageLoader(_props: IPageCommonProps) {
+function PopupLoader(_props: IPageCommonProps) {
   return (
-    <div className={styles.pgLodr}>
+    <Popup>
       <Loader size={LoaderSizes["100X100"]} />
-    </div>
+    </Popup>
   );
 }
 
-export default PageLoader;
+export default PopupLoader;

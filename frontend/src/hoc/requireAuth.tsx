@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { NextPageContext, NextPage } from "next";
 
-import PageLoader from "@src/non-route-pages/page-loader/page-loader";
+import PopupLoader from "@src/non-route-pages/popup-loader/popup-loader";
 import AuthenticationPage from "@src/non-route-pages/authentication-page/authentication-page";
 
 import { IRootReducerState } from "@action-reducers/root.reducer";
@@ -29,7 +29,7 @@ function requireAuth<PropTypes extends IPageCommonProps>(
     return (
       <>
         <WrappedComponent {...props} />
-        {isTokenRefreshInProgress && <PageLoader {...props} />}
+        {isTokenRefreshInProgress && <PopupLoader {...props} />}
       </>
     );
   }

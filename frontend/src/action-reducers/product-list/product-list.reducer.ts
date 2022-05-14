@@ -20,6 +20,7 @@ const defaultProductListReducer: IProductListReducerState = {
   errors: [],
   products: [],
   isLoadingMoreInProgress: false,
+  isInitialLoadFetchedSuccessfully: false,
   loadMoreError: [],
   pagination: {
     limit: 0,
@@ -47,6 +48,7 @@ const productListReducer = (
             ...draft,
             isLoading: false,
             errors: [],
+            isInitialLoadFetchedSuccessfully: true,
             ...action?.payload,
           };
         }

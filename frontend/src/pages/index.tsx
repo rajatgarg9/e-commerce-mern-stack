@@ -5,13 +5,11 @@ import { NextPage } from "next";
 import Header from "@components/common/header/header";
 import ProductListSection from "@components/product-list-page/product-list-section/product-list-section";
 
-import requireAuth from "@src/hoc/requireAuth";
 import userDetails from "@src/hoc/userDetails";
 
-import {
-  fetchProductList,
-  productListReset,
-} from "@action-reducers/product-list/product-list.action";
+import { productListReset } from "@action-reducers/product-list/product-list.action";
+
+import { loadData } from "@src/pages-utility/home-page";
 
 import { INextPageContext } from "@interfaces/get-initial-props.interface";
 
@@ -24,7 +22,8 @@ function Home({ hasServerFetchedData }: IPageCommonProps) {
 
   useEffect(() => {
     if (!hasServerFetchedData) {
-      dispatch(fetchProductList());
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      loadData(dispatch);
     }
 
     return () => {
@@ -42,8 +41,8 @@ function Home({ hasServerFetchedData }: IPageCommonProps) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default requireAuth(userDetails(Home as NextPage<any>));
+export default userDetails(Home as NextPage<any>);
 
 Home.getInitialProps = async (ctx: INextPageContext) => {
-  await ctx.store.dispatch(fetchProductList());
+  await loadData(ctx.store.dispatch);
 };

@@ -6,9 +6,10 @@ import { ButtonTagTypes } from "./button.enum";
 
 export interface IButtonCommonPropTypes {
   className?: string;
-  title: string;
+  title?: string;
   isLoading?: boolean;
   isDisabled?: boolean;
+  children?: JSX.Element | string;
 }
 
 export interface ITagButtonPropTypes extends IButtonCommonPropTypes {
@@ -18,7 +19,7 @@ export interface ITagButtonPropTypes extends IButtonCommonPropTypes {
 }
 
 export interface ITagLinkPropTypes
-  extends Omit<ILinkPropTypes, "className" | "title">,
+  extends Omit<ILinkPropTypes, "className" | "title" | "children">,
     IButtonCommonPropTypes {
   type: ButtonTagTypes.LINK;
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;

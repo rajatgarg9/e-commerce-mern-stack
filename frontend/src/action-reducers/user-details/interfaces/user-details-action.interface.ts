@@ -18,7 +18,12 @@ export interface IUserDetailsFetchFailActionResponse {
   payload: IApiError;
 }
 
+export interface IUserDetailsResetDataActionResponse {
+  type: UserDetailsActions.USER_DETAILS_RESET_DATA;
+}
+
 export type IUserDetailsAllActions =
   | IUserDetailsFetchStartActionResponse
   | IUserDetailsFetchSuccessActionResponse
-  | IUserDetailsFetchFailActionResponse;
+  | IUserDetailsFetchFailActionResponse
+  | IUserDetailsResetDataActionResponse;

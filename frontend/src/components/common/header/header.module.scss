@@ -21,27 +21,30 @@
 
 .userInfoSec {
   display: flex;
+  align-items: center;
 }
 
-.avatar {
+.avatarWrap {
   display: inline-block;
   background-color: $color_6;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 25px;
+  height: 25px;
   flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
 }
 
-.nameNEmailWrap {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin-left: 10px;
+.name {
+  @include textTruncate;
+
+  max-width: 100px;
+  display: inline-block;
+  margin-left: 5px;
 }
 
 .logoutBtn {
-  cursor: pointer;
-  margin-left: 20px;
+  margin-left: 10px;
 }
 
 @include desktop {
@@ -51,5 +54,14 @@
 
   .contentWrap {
     min-height: 80px;
+  }
+
+  .avatarWrap {
+    width: 30px;
+    height: 30px;
+  }
+
+  .logoutBtn {
+    margin-left: 20px;
   }
 }

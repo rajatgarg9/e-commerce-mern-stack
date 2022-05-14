@@ -4,6 +4,12 @@ import { AxiosInstance } from "axios";
 
 import { IRootReducerState } from "@action-reducers/root.reducer";
 
+export type IDispatch = ThunkDispatch<
+  IRootReducerState,
+  AxiosInstance,
+  AnyAction
+>;
+
 export type IStore = Store<IRootReducerState> & {
-  dispatch: ThunkDispatch<IRootReducerState, AxiosInstance, AnyAction>;
+  dispatch: IDispatch;
 };

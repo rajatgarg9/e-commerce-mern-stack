@@ -13,4 +13,12 @@ a {
 
 button {
   padding: 0;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.utility__popupBody {
+  overflow: hidden;
 }

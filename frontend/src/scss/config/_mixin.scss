@@ -5,8 +5,14 @@
   padding-left: 32px;
   padding-right: 32px;
 
-  @include desktop {
+  @include desktop-xl {
     padding-left: 0;
     padding-right: 0;
   }
+}
+
+@mixin textTruncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

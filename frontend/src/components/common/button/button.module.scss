@@ -4,18 +4,17 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
+  padding: 5px 10px;
   border: 2px solid transparent;
   border-radius: 10px;
-  background-color: $color_5;
+  background-color: $color_8;
   color: $color_4;
   cursor: pointer;
-  min-width: 120px;
 
   &:hover {
     background-color: transparent;
-    color: $color_5;
-    border-color: $color_5;
+    color: $color_8;
+    border-color: $color_8;
   }
 
   &--dsbld {

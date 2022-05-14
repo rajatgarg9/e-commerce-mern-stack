@@ -9,6 +9,7 @@ const {
   USER_DETAILS_FETCH_START,
   USER_DETAILS_FETCH_SUCCESS,
   USER_DETAILS_FETCH_FAIL,
+  USER_DETAILS_RESET_DATA,
 } = UserDetailsActions;
 
 const defaultUserDetailsReducer: IUserDetailsReducerState = {
@@ -46,6 +47,10 @@ const userDetailsReducer = (
           draft.errors = action?.payload;
 
           return draft;
+        }
+
+        case USER_DETAILS_RESET_DATA: {
+          return { ...draft, ...defaultUserDetailsReducer };
         }
 
         default: {

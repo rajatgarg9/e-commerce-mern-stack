@@ -12,7 +12,10 @@ import { isClient } from "@utilities/methods/miscellaneous";
 import { getCookie, setCookie, CookieNames } from "@utilities/methods/cookies";
 
 import { authLoadCookieDetails } from "@action-reducers/auth/auth.action";
-import { fetchUserDetails } from "@action-reducers/user-details/user-details.action";
+import {
+  fetchUserDetails,
+  userDetailsResetData,
+} from "@action-reducers/user-details/user-details.action";
 
 import { INextPageContext } from "@interfaces/get-initial-props.interface";
 import { IPageCommonProps } from "@interfaces/page-common-props.interface";
@@ -37,6 +40,12 @@ function userDetails<PropTypes extends IPageCommonProps>(
       if (!hasServerFetchedData && refreshToken) {
         dispatch(fetchUserDetails(true));
       }
+
+      return () => {
+        if (!refreshToken) {
+          dispatch(userDetailsResetData());
+        }
+      };
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [refreshToken]);

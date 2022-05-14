@@ -21,6 +21,7 @@ function Button({
   isDisabled,
   href,
   type = ButtonTagTypes.Button,
+  children,
 }: IButtonPropTypes) {
   let Tag: string | typeof Link = "button";
   let dynamicProps = {};
@@ -53,7 +54,7 @@ function Button({
       {...dynamicProps}
     >
       {isLoading && <Loader className={styles.loader} />}
-      <span className={styles.title}>{title}</span>
+      <span className={styles.title}>{children || title}</span>
     </Tag>
   );
 }

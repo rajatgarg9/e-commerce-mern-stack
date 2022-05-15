@@ -56,6 +56,7 @@ function SingleProductInfoSection({
                   loader={() => imageUrl}
                   src={imageUrl}
                   alt={name}
+                  unoptimized
                 />
               </div>
             )}

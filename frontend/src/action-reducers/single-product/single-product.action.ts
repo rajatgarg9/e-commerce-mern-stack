@@ -7,6 +7,9 @@ import {
   ISingleProductFetchStart,
   ISingleProductFetchSuccess,
   ISingleProductFetchFail,
+  ISingleProductUpdateStart,
+  ISingleProductUpdateSuccess,
+  ISingleProductUpdateFail,
   ISingleProductReset,
 } from "@action-reducers/single-product/interfaces/single-product-action.interface";
 
@@ -14,11 +17,15 @@ import { ISingleProductAPIResponse } from "@action-reducers/single-product/inter
 
 import { ApiMethodTypes } from "@enums/api-handler.enum";
 import { SingleProductActions } from "./enums/single-product-actions.enum";
+import { IPatchProductData } from "./interfaces/single-product-thunk.interface";
 
 const {
   SINGLE_PRODUCT_FETCH_START,
   SINGLE_PRODUCT_FETCH_SUCCESS,
   SINGLE_PRODUCT_FETCH_FAIL,
+  SINGLE_PRODUCT_UPDATE_START,
+  SINGLE_PRODUCT_UPDATE_SUCCESS,
+  SINGLE_PRODUCT_UPDATE_FAIL,
   SINGLE_PRODUCT_RESET,
 } = SingleProductActions;
 
@@ -46,6 +53,30 @@ export function singleProductFetchFail(
   };
 }
 
+export function singleProductUpdateStart(): ISingleProductUpdateStart {
+  return {
+    type: SINGLE_PRODUCT_UPDATE_START,
+  };
+}
+
+export function singleProductUpdateSuccess(
+  payload: ISingleProductUpdateSuccess["payload"],
+): ISingleProductUpdateSuccess {
+  return {
+    type: SINGLE_PRODUCT_UPDATE_SUCCESS,
+    payload,
+  };
+}
+
+export function singleProductUpdateFail(
+  payload: ISingleProductUpdateFail["payload"],
+): ISingleProductUpdateFail {
+  return {
+    type: SINGLE_PRODUCT_UPDATE_FAIL,
+    payload,
+  };
+}
+
 export function singleProductReset(): ISingleProductReset {
   return {
     type: SINGLE_PRODUCT_RESET,
@@ -64,4 +95,47 @@ export const fetchSingleProduct =
       onFailCb: (data) => dispatch(singleProductFetchFail(data)),
     };
     await apiHandler<ISingleProductAPIResponse>(config, dispatch, getState);
+  };
+
+export const patchSingleProduct =
+  (productId: string, payloadData: IPatchProductData): IThunkFunction =>
+  async (dispatch, getState) => {
+    const config: IApiHandlerConfig<
+      ISingleProductAPIResponse,
+      IPatchProductData
+    > = {
+      method: ApiMethodTypes.PATCH,
+      endpoint: `/products/${productId}`,
+      cancelEndpointKey: "/products/id",
+      onStartCb: () => dispatch(singleProductUpdateStart()),
+      onSuccessCb: (data) => dispatch(singleProductUpdateSuccess(data)),
+      onFailCb: (data) => dispatch(singleProductUpdateFail(data)),
+      data: payloadData,
+    };
+    await apiHandler<ISingleProductAPIResponse, IPatchProductData>(
+      config,
+      dispatch,
+      getState,
+    );
+  };
+
+export const createSingleProduct =
+  (payloadData: ISingleProductAPIResponse): IThunkFunction =>
+  async (dispatch, getState) => {
+    const config: IApiHandlerConfig<
+      ISingleProductAPIResponse,
+      ISingleProductAPIResponse
+    > = {
+      method: ApiMethodTypes.POST,
+      endpoint: `products/product`,
+      onStartCb: () => dispatch(singleProductUpdateStart()),
+      onSuccessCb: (data) => dispatch(singleProductUpdateSuccess(data)),
+      onFailCb: (data) => dispatch(singleProductUpdateFail(data)),
+      data: payloadData,
+    };
+    await apiHandler<ISingleProductAPIResponse, ISingleProductAPIResponse>(
+      config,
+      dispatch,
+      getState,
+    );
   };

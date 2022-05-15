@@ -5,4 +5,6 @@ export interface ISingleProductReducerState extends ISingleProductAPIResponse {
   isLoading: boolean;
   errors: IApiError;
   isInitialLoadFetchedSuccessfully: boolean;
+  isUpdateInProgress: boolean;
+  updateErrors: IApiError;
 }

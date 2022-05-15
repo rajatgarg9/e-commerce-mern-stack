@@ -16,6 +16,20 @@ export interface ISingleProductFetchFail {
   payload: IApiError;
 }
 
+export interface ISingleProductUpdateStart {
+  type: SingleProductActions.SINGLE_PRODUCT_UPDATE_START;
+}
+
+export interface ISingleProductUpdateSuccess {
+  type: SingleProductActions.SINGLE_PRODUCT_UPDATE_SUCCESS;
+  payload: ISingleProductAPIResponse;
+}
+
+export interface ISingleProductUpdateFail {
+  type: SingleProductActions.SINGLE_PRODUCT_UPDATE_FAIL;
+  payload: IApiError;
+}
+
 export interface ISingleProductReset {
   type: SingleProductActions.SINGLE_PRODUCT_RESET;
 }
@@ -24,4 +38,7 @@ export type ISingleProductAllActions =
   | ISingleProductFetchStart
   | ISingleProductFetchSuccess
   | ISingleProductFetchFail
+  | ISingleProductUpdateStart
+  | ISingleProductUpdateSuccess
+  | ISingleProductUpdateFail
   | ISingleProductReset;

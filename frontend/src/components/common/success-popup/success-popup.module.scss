@@ -1,0 +1,25 @@
+@import "@scss/_compoent_import.scss";
+
+.successPopupCard {
+  border-radius: 20px;
+  max-width: 80vw;
+  width: 100%;
+  background-color: $color_4;
+  overflow: auto;
+  padding: 40px 20px;
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  .btnWrap {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  @include desktop {
+    max-width: 50vw;
+  }
+}

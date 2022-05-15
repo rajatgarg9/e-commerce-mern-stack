@@ -4,7 +4,7 @@ import { NextPage } from "next";
 
 import { initializeStore } from "@src/store";
 
-import PopupLoader from "@src/non-route-pages/popup-loader/popup-loader";
+import PopupLoader from "@src/components/common/popup-loader/popup-loader";
 
 import { IRootReducerState } from "@action-reducers/root.reducer";
 
@@ -18,13 +18,10 @@ import {
 } from "@action-reducers/user-details/user-details.action";
 
 import { INextPageContext } from "@interfaces/get-initial-props.interface";
-import { IPageCommonProps } from "@interfaces/page-common-props.interface";
 
 import { IAuthReducerMainData } from "@action-reducers/auth/interfaces/auth-reducer-state.interface";
 
-function userDetails<PropTypes extends IPageCommonProps>(
-  WrappedComponent: NextPage<PropTypes>,
-): {
+function userDetails<PropTypes>(WrappedComponent: NextPage<PropTypes>): {
   (props: PropTypes): JSX.Element;
 } {
   function ChildComponent(props: PropTypes) {

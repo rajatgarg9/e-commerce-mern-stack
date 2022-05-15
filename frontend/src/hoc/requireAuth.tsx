@@ -2,16 +2,12 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { NextPageContext, NextPage } from "next";
 
-import PopupLoader from "@src/non-route-pages/popup-loader/popup-loader";
+import PopupLoader from "@src/components/common/popup-loader/popup-loader";
 import AuthenticationPage from "@src/non-route-pages/authentication-page/authentication-page";
 
 import { IRootReducerState } from "@action-reducers/root.reducer";
 
-import { IPageCommonProps } from "@interfaces/page-common-props.interface";
-
-function requireAuth<PropTypes extends IPageCommonProps>(
-  WrappedComponent: NextPage<PropTypes>,
-): {
+function requireAuth<PropTypes>(WrappedComponent: NextPage<PropTypes>): {
   (props: PropTypes): JSX.Element;
 } {
   function ChildComponent(props: PropTypes) {

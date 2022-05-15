@@ -1,0 +1,19 @@
+@import "@scss/_compoent_import.scss";
+
+.errorPopupCard {
+  border-radius: 20px;
+  max-width: 80vw;
+  width: 100%;
+  background-color: $color_4;
+  overflow: auto;
+  padding: 40px 20px;
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @include desktop {
+    max-width: 50vw;
+  }
+}

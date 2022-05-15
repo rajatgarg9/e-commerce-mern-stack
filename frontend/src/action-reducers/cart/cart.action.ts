@@ -108,9 +108,9 @@ export const addProductToCart =
     const config: IApiHandlerConfig<ICartApiResponse, IAddProductToCartData> = {
       method: ApiMethodTypes.POST,
       endpoint: `/users/@me/cart/${productId}`,
-      onStartCb: () => dispatch(cartFetchStart()),
-      onSuccessCb: (data) => dispatch(cartFetchSuccess(data)),
-      onFailCb: (data) => dispatch(cartFetchFail(data)),
+      onStartCb: () => dispatch(cartUpdateStart()),
+      onSuccessCb: (data) => dispatch(cartUpdateSuccess(data)),
+      onFailCb: (data) => dispatch(cartUpdateFail(data)),
       data: payload,
     };
     await apiHandler<ICartApiResponse, IAddProductToCartData>(
@@ -124,9 +124,9 @@ export const emptyCart = (): IThunkFunction => async (dispatch, getState) => {
   const config: IApiHandlerConfig<ICartApiResponse> = {
     method: ApiMethodTypes.POST,
     endpoint: `/users/@me/empty-cart`,
-    onStartCb: () => dispatch(cartFetchStart()),
-    onSuccessCb: (data) => dispatch(cartFetchSuccess(data)),
-    onFailCb: (data) => dispatch(cartFetchFail(data)),
+    onStartCb: () => dispatch(cartUpdateStart()),
+    onSuccessCb: (data) => dispatch(cartUpdateSuccess(data)),
+    onFailCb: (data) => dispatch(cartUpdateFail(data)),
   };
   await apiHandler<ICartApiResponse>(config, dispatch, getState);
 };

@@ -8,7 +8,7 @@ import { ICartResponse } from '@src/carts/interfaces';
 
 import { IRequest } from '@src/interfaces';
 
-@Controller('carts')
+@Controller('users/@me/cart')
 export class CartsController {
   constructor(private readonly cartsService: CartsService) {}
 

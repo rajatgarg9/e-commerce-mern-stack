@@ -14,7 +14,11 @@ import {
   createOrderResetData,
 } from "@action-reducers/order/create-order/create-order.action";
 
-import { cartResetData } from "@action-reducers/cart/cart.action";
+import {
+  cartResetData,
+  emptyCart,
+  cartClearUpdateError,
+} from "@action-reducers/cart/cart.action";
 
 import { IRootReducerState } from "@action-reducers/root.reducer";
 import { ButtonTagTypes } from "@components/common/button/button.enum";
@@ -30,6 +34,12 @@ function CartSection({ className = "" }: ICartSectionProps) {
   const errors = useSelector((state: IRootReducerState) => state.cart.errors);
   const products = useSelector(
     (state: IRootReducerState) => state.cart.products,
+  );
+  const isCartUpdateInProgress = useSelector(
+    (state: IRootReducerState) => state.cart.isUpdateInProgress,
+  );
+  const cartUpdateErrors = useSelector(
+    (state: IRootReducerState) => state.cart.updateErrors,
   );
   const isCreateOrderLoading = useSelector(
     (state: IRootReducerState) => state.order.createOrder.isLoading,
@@ -92,6 +102,12 @@ function CartSection({ className = "" }: ICartSectionProps) {
                     <Button
                       title="Place order"
                       onClick={() => setIsPreorderFormOpened(true)}
+                      className={styles.btnItem}
+                    />
+                    <Button
+                      title="Empty cart"
+                      onClick={() => dispatch(emptyCart())}
+                      className={styles.btnItem}
                     />
                   </div>
                 </>
@@ -100,13 +116,20 @@ function CartSection({ className = "" }: ICartSectionProps) {
           )}
         </div>
       </div>
-      {isCreateOrderLoading && <PopupLoader />}
+      {(isCreateOrderLoading || isCartUpdateInProgress) && <PopupLoader />}
       {createOrderErrors?.length > 0 && (
         <ErrorPopup
           message={createOrderErrors}
           onPopupClose={() => dispatch(createOrderResetData())}
         />
       )}
+      {cartUpdateErrors?.length > 0 && (
+        <ErrorPopup
+          message={cartUpdateErrors}
+          onPopupClose={() => dispatch(cartClearUpdateError())}
+        />
+      )}
+
       {orderId && (
         <SuccessPopup
           message={`Order with id ${orderId} has been placed successfully`}

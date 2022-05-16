@@ -372,7 +372,7 @@ Product Object
 }
 ```
 
-## `13. /api/v1/users/@me/empty-cart`
+## `13. /api/v1/users/@me/empty`
 
 **Request:**  
 &nbsp;&nbsp;**Method:** `PUT`  

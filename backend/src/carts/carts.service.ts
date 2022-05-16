@@ -119,7 +119,7 @@ export class CartsService {
     return getFormattedCartResponse(cartWithSellerPopulate);
   }
 
-  async emptyCart(userId: string): Promise<void> {
+  async emptyCart(userId: string): Promise<ICartResponse> {
     let cart = await this.cartsModel.findOne({ userId });
 
     if (!cart) {
@@ -130,5 +130,7 @@ export class CartsService {
     cart.products = [] as any;
 
     await cart.save();
+
+    return this.getCart(userId);
   }
 }

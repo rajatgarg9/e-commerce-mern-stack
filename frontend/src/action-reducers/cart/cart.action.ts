@@ -122,8 +122,8 @@ export const addProductToCart =
 
 export const emptyCart = (): IThunkFunction => async (dispatch, getState) => {
   const config: IApiHandlerConfig<ICartApiResponse> = {
-    method: ApiMethodTypes.POST,
-    endpoint: `/users/@me/empty-cart`,
+    method: ApiMethodTypes.PUT,
+    endpoint: `/users/@me/cart/empty`,
     onStartCb: () => dispatch(cartUpdateStart()),
     onSuccessCb: (data) => dispatch(cartUpdateSuccess(data)),
     onFailCb: (data) => dispatch(cartUpdateFail(data)),

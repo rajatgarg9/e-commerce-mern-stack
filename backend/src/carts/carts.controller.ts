@@ -28,8 +28,8 @@ export class CartsController {
     return this.cartsService.addProduct(addProductDto, productId, user?.id);
   }
 
-  @Put('/empty-cart')
-  async emptyCart(@Req() req: IRequest): Promise<void> {
+  @Put('/empty')
+  async emptyCart(@Req() req: IRequest): Promise<ICartResponse> {
     const { user } = req || {};
     return this.cartsService.emptyCart(user?.id);
   }

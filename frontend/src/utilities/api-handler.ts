@@ -72,7 +72,7 @@ export async function apiHandler<R = void, D = void>(
       method: method || ApiMethodTypes.GET,
       url: endpoint,
       baseURL: baseURL || `${getBaseApiUrl()}/api/v1`,
-      timeout: 2000,
+      timeout: 20000,
       headers: {
         ...customHeaders,
         ...headers,

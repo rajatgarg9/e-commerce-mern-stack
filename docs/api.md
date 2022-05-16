@@ -418,7 +418,16 @@ Product Object
   auth header
 ```
 
-**Response:**  
+&nbsp;&nbsp;**Body:**
+
+```js
+{
+  address: string;
+  paymentCardNumber: number;
+}
+```
+
+**Response:**
 &nbsp;&nbsp;**Success:**
 
 ```js

@@ -1,0 +1,41 @@
+@import "@scss/_compoent_import.scss";
+
+.content {
+  @include contentWrap;
+
+  max-width: 500px;
+}
+
+.heading {
+  color: $color_1;
+  text-align: center;
+}
+
+.lodNErrCmpt,
+.list,
+.noRslt {
+  margin-top: 40px;
+}
+
+.item {
+  &:not(:first-child) {
+    margin-top: 30px;
+  }
+}
+
+.noRslt {
+  color: $color_1;
+  text-align: center;
+}
+
+.totalWrap {
+  margin-top: 20px;
+  color: $color_1;
+  display: flex;
+  justify-content: space-between;
+}
+
+.btnWrap {
+  margin-top: 20px;
+  text-align: center;
+}

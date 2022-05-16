@@ -1,0 +1,26 @@
+@import "@scss/_compoent_import.scss";
+
+.cartSnglpodct {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.imageWrap {
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  align-self: flex-start;
+}
+
+.rightSec {
+  color: $color_1;
+  margin-left: 10px;
+}
+
+.name {
+  text-transform: capitalize;
+}

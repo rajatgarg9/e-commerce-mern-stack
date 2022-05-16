@@ -1,8 +1,12 @@
 import { apiHandler } from "@src/utilities/api-handler";
 
-import { IThunkFunction } from "@interfaces/thunk-function.interface";
+import {
+  IThunkFunction,
+  IThunkCallbackParameter,
+} from "@interfaces/thunk-function.interface";
 import { IApiHandlerConfig } from "@interfaces/api-handler.interface";
 import { ApiMethodTypes } from "@enums/api-handler.enum";
+import { ICreateOrderFormParam } from "./interfaces/create-order-thunk.interface";
 import {
   ICreateOrderFetchStart,
   ICreateOrderFetchSuccess,
@@ -50,13 +54,37 @@ export function createOrderResetData(): ICreateOrderResetData {
   };
 }
 
-export const createOrder = (): IThunkFunction => async (dispatch, getState) => {
-  const config: IApiHandlerConfig<ICreateOrderApiResponse> = {
-    method: ApiMethodTypes.POST,
-    endpoint: "/users/@me/order",
-    onStartCb: () => dispatch(createOrderFetchStart()),
-    onSuccessCb: (data) => dispatch(createOrderFetchSuccess(data)),
-    onFailCb: (data) => dispatch(createOrderFetchFail(data)),
+export const createOrder =
+  (
+    formDetails: ICreateOrderFormParam,
+    { onSuccessCallback, onFailCallback }: IThunkCallbackParameter,
+  ): IThunkFunction =>
+  async (dispatch, getState) => {
+    const config: IApiHandlerConfig<
+      ICreateOrderApiResponse,
+      ICreateOrderFormParam
+    > = {
+      method: ApiMethodTypes.POST,
+      endpoint: "/users/@me/order",
+      onStartCb: () => dispatch(createOrderFetchStart()),
+      data: formDetails,
+      onSuccessCb: (data) => {
+        dispatch(createOrderFetchSuccess(data));
+
+        if (onSuccessCallback) {
+          onSuccessCallback();
+        }
+      },
+      onFailCb: (data) => {
+        dispatch(createOrderFetchFail(data));
+        if (onFailCallback) {
+          onFailCallback();
+        }
+      },
+    };
+    await apiHandler<ICreateOrderApiResponse, ICreateOrderFormParam>(
+      config,
+      dispatch,
+      getState,
+    );
   };
-  await apiHandler<ICreateOrderApiResponse>(config, dispatch, getState);
-};

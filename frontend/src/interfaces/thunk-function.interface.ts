@@ -10,3 +10,9 @@ export type IThunkFunction = ThunkAction<
   AxiosInstance,
   AnyAction
 >;
+
+export interface IThunkCallbackParameter {
+  onStartCallback?: () => void;
+  onSuccessCallback?: () => void;
+  onFailCallback?: () => void;
+}

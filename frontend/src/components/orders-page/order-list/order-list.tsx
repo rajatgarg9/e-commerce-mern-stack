@@ -1,7 +1,9 @@
 import { useSelector } from "react-redux";
 
 import Images from "next/image";
+import Button from "@components/common/button/button";
 
+import { ButtonTagTypes } from "@components/common/button/button.enum";
 import LoaderErrorComponent from "@src/components/common/loader-error-component/loader-error-component";
 
 import { IRootReducerState } from "@action-reducers/root.reducer";
@@ -130,6 +132,9 @@ function OrderList({ className }: IOrderListProps) {
             })}
           </ul>
         )}
+        <div className={styles.btnWrap}>
+          <Button title="Go to Home" type={ButtonTagTypes.LINK} href="/" />
+        </div>
       </div>
     </div>
   );

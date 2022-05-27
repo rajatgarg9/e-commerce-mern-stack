@@ -1,55 +1,50 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NextPage } from "next";
-import { useRouter } from "next/router";
 
 import Header from "@components/common/header/header";
-import SingleProductInfoSection from "@components/product-page/single-product-info-section/single-product-info-section";
+import OrderList from "@components/orders-page/order-list/order-list";
 
 import userDetails from "@src/hoc/userDetails";
 
-import { singleProductReset } from "@action-reducers/single-product/single-product.action";
+import { getOrdersResetData } from "@action-reducers/order/get-orders/get-orders.action";
 
-import { loadData } from "@src/pages-utility/product-page";
+import { loadData } from "@src/pages-utility/orders-page";
 
 import { IRootReducerState } from "@action-reducers/root.reducer";
 import { INextPageContext } from "@interfaces/get-initial-props.interface";
 
-import styles from "./product.module.scss";
+import styles from "./orders.module.scss";
 
-function Product() {
+function Orders() {
   const isInitialLoadFetchedSuccessfully = useSelector(
     (state: IRootReducerState) =>
-      state.singleProduct.isInitialLoadFetchedSuccessfully,
+      state.order.getOrders.isInitialLoadFetchedSuccessfully,
   );
-  const router = useRouter();
-  const { productId } = router.query;
 
   const dispatch = useDispatch();
   useEffect(() => {
     if (!isInitialLoadFetchedSuccessfully) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      loadData(dispatch, productId as string);
+      loadData(dispatch);
     }
 
     return () => {
-      dispatch(singleProductReset());
+      dispatch(getOrdersResetData());
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className="productPage">
       <Header />
-      <SingleProductInfoSection className={styles.snglPodtInfoSec} />
+      <OrderList className={styles.orderList} />
     </div>
   );
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default userDetails(Product as NextPage<any>);
+export default userDetails(Orders as NextPage<any>);
 
-Product.getInitialProps = async (ctx: INextPageContext) => {
-  const { query: { productId } = {} } = ctx;
-
-  await loadData(ctx.store.dispatch, productId as string);
+Orders.getInitialProps = async (ctx: INextPageContext) => {
+  await loadData(ctx.store.dispatch);
 };

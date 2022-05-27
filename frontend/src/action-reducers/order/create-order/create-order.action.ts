@@ -65,7 +65,7 @@ export const createOrder =
       ICreateOrderFormParam
     > = {
       method: ApiMethodTypes.POST,
-      endpoint: "/users/@me/order",
+      endpoint: "/users/@me/orders/order",
       onStartCb: () => dispatch(createOrderFetchStart()),
       data: formDetails,
       onSuccessCb: (data) => {

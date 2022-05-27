@@ -8,7 +8,7 @@ import { CreateOrderDto } from '@src/orders/dto';
 
 import { IRequest } from '@src/interfaces';
 
-@Controller('users/@me/order')
+@Controller('users/@me/orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
@@ -17,7 +17,7 @@ export class OrdersController {
     const { user } = req || {};
     return this.ordersService.getAllOrders(user?.id);
   }
-  @Post('/')
+  @Post('/order')
   async createOrder(
     @Req() req: IRequest,
     @Body() createOrderDto: CreateOrderDto,

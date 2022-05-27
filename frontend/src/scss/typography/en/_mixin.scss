@@ -89,3 +89,16 @@
     font-size: 14px;
   }
 }
+
+@mixin typo_body_4 {
+  font-family: $font_family;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+  font-style: normal;
+  letter-spacing: 1px;
+
+  @include desktop {
+    font-size: 16px;
+  }
+}

@@ -7,7 +7,7 @@ import CartSection from "@components/cart-page/cart-setion/cart-section";
 
 import userDetails from "@src/hoc/userDetails";
 
-import { fetchCart, cartResetData } from "@action-reducers/cart/cart.action";
+import { cartResetData } from "@action-reducers/cart/cart.action";
 
 import { loadData } from "@src/pages-utility/cart-page";
 
@@ -25,7 +25,8 @@ function Cart() {
   const dispatch = useDispatch();
   useEffect(() => {
     if (!isInitialLoadFetchedSuccessfully) {
-      dispatch(fetchCart());
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      loadData(dispatch);
     }
 
     return () => {

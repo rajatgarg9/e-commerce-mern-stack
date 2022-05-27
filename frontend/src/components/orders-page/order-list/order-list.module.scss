@@ -1,0 +1,66 @@
+@import "@scss/_compoent_import.scss";
+
+.cntntWrap {
+  @include contentWrap;
+}
+
+.lodrNErrCmpt {
+  margin-top: 100px;
+}
+
+.noOrder {
+  color: $color_4;
+  text-align: center;
+}
+
+.orderLst {
+  word-break: break-word;
+}
+
+.orderItm {
+  border: 1px solid $color_6;
+  padding: 10px;
+  border-radius: 10px;
+
+  &:not(:first-child) {
+    margin-top: 20px;
+  }
+}
+
+.itemRow {
+  &:not(:first-child) {
+    margin-top: 10px;
+  }
+
+  &--top {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+}
+
+.productHdng {
+  color: $color_1;
+}
+
+.productLst {
+  margin-top: 10px;
+}
+
+.productItem {
+  display: flex;
+
+  &:not(:first-child) {
+    margin-top: 10px;
+  }
+}
+
+.productImgWrap {
+  width: 100px;
+  height: 100px;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  margin-right: 10px;
+}
